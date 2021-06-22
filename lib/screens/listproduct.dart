@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class ListProduct extends StatelessWidget {
   final String? name;
-  ListProduct({this.name});
+  final snapShot;
+  ListProduct({this.name, this.snapShot});
 
   @override
   Widget build(BuildContext context) {
@@ -72,37 +73,20 @@ class ListProduct extends StatelessWidget {
                 ),
                 Container(
                   height: 550,
-                  child: GridView.count(
-                    mainAxisSpacing: 20,
-                    childAspectRatio: 0.7,
-                    crossAxisCount: 2,
+                  child: GridView.builder(
+                    itemCount: snapShot.data.documents.length,
+                    itemBuilder: (context, index) => SingleProduct(
+                      name: snapShot.data.documents[index]["name"],
+                      image: snapShot.data.documents[index]["image"],
+                      price: snapShot.data.documents[index]["price"],
+                    ),
                     scrollDirection: Axis.vertical,
-                    children: [
-                      SingleProduct(
-                          image: "women.jpg",
-                          name: "Women Long T-Shirt",
-                          price: 30.0),
-                      SingleProduct(
-                          image: "women.jpg",
-                          name: "Women Long T-Shirt",
-                          price: 30.0),
-                      SingleProduct(
-                          image: "women.jpg",
-                          name: "Women Long T-Shirt",
-                          price: 30.0),
-                      SingleProduct(
-                          image: "women.jpg",
-                          name: "Women Long T-Shirt",
-                          price: 30.0),
-                      SingleProduct(
-                          image: "women.jpg",
-                          name: "Women Long T-Shirt",
-                          price: 30.0),
-                      SingleProduct(
-                          image: "women.jpg",
-                          name: "Women Long T-Shirt",
-                          price: 30.0)
-                    ],
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.7,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
                   ),
                 )
               ],

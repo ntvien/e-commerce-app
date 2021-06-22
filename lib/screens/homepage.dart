@@ -15,6 +15,10 @@ class HomePage extends StatefulWidget {
 
 Product? menData;
 Product? womenData;
+Product? bulbData;
+Product? smartPhoneData;
+var featureSnapShot;
+var newAchivesSnapShot;
 
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _keyScaffold = GlobalKey<ScaffoldState>();
@@ -178,6 +182,7 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(
                     builder: (ctx) => ListProduct(
                       name: "Featured",
+                      snapShot: featureSnapShot,
                     ),
                   ),
                 );
@@ -199,28 +204,36 @@ class _HomePageState extends State<HomePage> {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (ctx) => DetailScreen(
-                        image: "women.jpg",
-                        name: "Women Long T-Shirt",
-                        price: 30.0),
+                      image: menData!.image,
+                      name: menData!.name,
+                      price: menData!.price,
+                    ),
                   ),
                 );
               },
               child: SingleProduct(
-                  image: "women.jpg", name: "Women Long T-Shirt", price: 30.0),
+                image: menData!.image,
+                name: menData!.name,
+                price: menData!.price,
+              ),
             ),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (ctx) => DetailScreen(
-                        image: "women.jpg",
-                        name: "Women Long T-Shirt",
-                        price: 40.0),
+                      image: womenData!.image,
+                      name: womenData!.name,
+                      price: womenData!.price,
+                    ),
                   ),
                 );
               },
               child: SingleProduct(
-                  image: "women.jpg", name: "Women Long T-Shirt", price: 40.0),
+                image: womenData!.image,
+                name: womenData!.name,
+                price: womenData!.price,
+              ),
             ),
           ],
         )
@@ -249,6 +262,7 @@ class _HomePageState extends State<HomePage> {
                         MaterialPageRoute(
                           builder: (ctx) => ListProduct(
                             name: "New Achives",
+                            snapShot: newAchivesSnapShot,
                           ),
                         ),
                       );
@@ -276,32 +290,36 @@ class _HomePageState extends State<HomePage> {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (ctx) => DetailScreen(
-                                image: "women.jpg",
-                                name: "Women Long T-Shirt",
-                                price: 40.0),
+                              image: bulbData!.image,
+                              name: bulbData!.name,
+                              price: bulbData!.price,
+                            ),
                           ),
                         );
                       },
                       child: SingleProduct(
-                          image: "women.jpg",
-                          name: "Women Long T-Shirt",
-                          price: 40.0),
+                        image: bulbData!.image,
+                        name: bulbData!.name,
+                        price: bulbData!.price,
+                      ),
                     ),
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (ctx) => DetailScreen(
-                                image: "women.jpg",
-                                name: "Women Long T-Shirt",
-                                price: 30.0),
+                              image: smartPhoneData!.image,
+                              name: smartPhoneData!.name,
+                              price: smartPhoneData!.price,
+                            ),
                           ),
                         );
                       },
                       child: SingleProduct(
-                          image: "women.jpg",
-                          name: "Women Long T-Shirt",
-                          price: 30.0),
+                        image: smartPhoneData!.image,
+                        name: smartPhoneData!.name,
+                        price: smartPhoneData!.price,
+                      ),
                     ),
                   ],
                 ),
@@ -344,59 +362,83 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: FutureBuilder(
-          future: Firestore.instance
-              .collection("product")
-              .document("KzDvCVWJ8CQCPlbW21Yq")
-              .collection("newachives")
-              .getDocuments(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if(snapshot.hasData){ // <-- check this before using data. true if it has data false if null.
+        future: Firestore.instance
+            .collection("product")
+            .document("KzDvCVWJ8CQCPlbW21Yq")
+            .collection("featureproduct")
+            .getDocuments(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          // List<DocumentSnapshot>? docs = snapshot.data!.documents;
+          featureSnapShot = snapshot;
+          menData = Product(
+              image: snapshot.data!.documents[0]['image'],
+              name: snapshot.data!.documents[0]['name'],
+              price: snapshot.data!.documents[0]['price']);
+
+          womenData = Product(
+              image: snapshot.data!.documents[1]['image'],
+              name: snapshot.data!.documents[1]['name'],
+              price: snapshot.data!.documents[1]['price']);
+
+          return FutureBuilder(
+            future: Firestore.instance
+                .collection("product")
+                .document("KzDvCVWJ8CQCPlbW21Yq")
+                .collection("newachives")
+                .getDocuments(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
               }
-              // List<DocumentSnapshot>? docs = snapshot.data!.documents;
-              menData = Product(
-                // ignore: deprecated_member_use
-                  image: snapshot.data!.documents[0]['image'],
-                  // ignore: deprecated_member_use
-                  name: snapshot.data!.documents[0].data['name'],
-                  // ignore: deprecated_member_use
-                  price: snapshot.data!.documents[0].data['price']);
-              print(menData!.name);
-            } else {
 
-            }
-            return Container(
-              height: double.infinity,
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              child: ListView(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    child: Column(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildImageSlider(),
-                            _buildCategory(),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            _buildFeature(),
-                            _buildNewAchives(),
-                          ],
-                        )
-                      ],
+              newAchivesSnapShot = snapshot;
+              bulbData = Product(
+                  image: snapshot.data!.documents[1]['image'],
+                  name: snapshot.data!.documents[1]['name'],
+                  price: snapshot.data!.documents[1]['price']);
+
+              smartPhoneData = Product(
+                  image: snapshot.data!.documents[2]['image'],
+                  name: snapshot.data!.documents[2]['name'],
+                  price: snapshot.data!.documents[2]['price']);
+
+              return Container(
+                height: double.infinity,
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                child: ListView(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildImageSlider(),
+                              _buildCategory(),
+                              SizedBox(height: 20),
+                              _buildFeature(),
+                              _buildNewAchives(),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          }),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
