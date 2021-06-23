@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/model/product.dart';
 import 'package:e_commerce_app/screens/homepage.dart';
 import 'package:e_commerce_app/widgets/singleproduct.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class ListProduct extends StatelessWidget {
   final String? name;
-  final snapShot;
+  List<Product>? snapShot = [];
   ListProduct({this.name, this.snapShot});
 
   @override
@@ -14,17 +15,7 @@ class ListProduct extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-          onPressed: () {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (ctx) => HomePage()),
-            );
-          },
-        ),
+        iconTheme: IconThemeData(color: Colors.black),
         actions: [
           IconButton(
             onPressed: () {},
@@ -73,20 +64,19 @@ class ListProduct extends StatelessWidget {
                 ),
                 Container(
                   height: 550,
-                  child: GridView.builder(
-                    itemCount: snapShot.data.documents.length,
-                    itemBuilder: (context, index) => SingleProduct(
-                      name: snapShot.data.documents[index]["name"],
-                      image: snapShot.data.documents[index]["image"],
-                      price: snapShot.data.documents[index]["price"],
-                    ),
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
                     scrollDirection: Axis.vertical,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.7,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                    ),
+                    children: snapShot!
+                        .map(
+                          (element) => SingleProduct(
+                            image: element.image,
+                            name: element.name,
+                            price: element.price,
+                          ),
+                        )
+                        .toList(),
                   ),
                 )
               ],
