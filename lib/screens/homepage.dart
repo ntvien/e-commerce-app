@@ -254,7 +254,8 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildFeature() {
     List<Product> featureList = productProvider.getFeatureList;
-    
+    List<Product> homeFeatureList = productProvider.getHomeFeatureList;
+
     return Column(
       children: [
         Row(
@@ -291,53 +292,40 @@ class _HomePageState extends State<HomePage> {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => DetailScreen(
-                        image: featureList.elementAt(0).image,
-                        name: featureList.elementAt(0).name,
-                        price: featureList.elementAt(0).price,
-                      ),
+            children: homeFeatureList.map((homeFeatureData) {
+              return Row(
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => DetailScreen(
+                            image: homeFeatureData.image,
+                            name: homeFeatureData.name,
+                            price: homeFeatureData.price,
+                          ),
+                        ),
+                      );
+                    },
+                    child: SingleProduct(
+                      image: homeFeatureData.image,
+                      name: homeFeatureData.name,
+                      price: homeFeatureData.price,
                     ),
-                  );
-                },
-                child: SingleProduct(
-                  image: featureList.elementAt(0).image,
-                  name: featureList.elementAt(0).name,
-                  price: featureList.elementAt(0).price,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (ctx) => DetailScreen(
-                        image: featureList.elementAt(1).image,
-                        name: featureList.elementAt(1).name,
-                        price: featureList.elementAt(1).price,
-                      ),
-                    ),
-                  );
-                },
-                child: SingleProduct(
-                  image: featureList.elementAt(1).image,
-                  name: featureList.elementAt(1).name,
-                  price: featureList.elementAt(1).price,
-                ),
-              ),
-            ],
+                  ),
+                ],
+              );
+            }).toList(),
           ),
-        )
+        ),
       ],
     );
   }
 
   Widget _buildNewAchives() {
     List<Product> newAchivesList = productProvider.getNewAchivesList;
-    
+    List<Product> homeNewAchivesList = productProvider.getHomeNewAchivesList;
+
     return Column(
       children: [
         Container(
@@ -377,53 +365,30 @@ class _HomePageState extends State<HomePage> {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+            children: homeNewAchivesList.map((homeNewAchivesData) {
+              return Row(
                 children: [
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => DetailScreen(
-                                image: newAchivesList.elementAt(0).image,
-                                name: newAchivesList.elementAt(0).name,
-                                price: newAchivesList.elementAt(0).price,
-                              ),
-                            ),
-                          );
-                        },
-                        child: SingleProduct(
-                          image: newAchivesList.elementAt(0).image,
-                          name: newAchivesList.elementAt(0).name,
-                          price: newAchivesList.elementAt(0).price,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => DetailScreen(
+                            image: homeNewAchivesData.image,
+                            name: homeNewAchivesData.name,
+                            price: homeNewAchivesData.price,
+                          ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (ctx) => DetailScreen(
-                                image: newAchivesList.elementAt(1).image,
-                                name: newAchivesList.elementAt(1).name,
-                                price: newAchivesList.elementAt(1).price,
-                              ),
-                            ),
-                          );
-                        },
-                        child: SingleProduct(
-                          image: newAchivesList.elementAt(1).image,
-                          name: newAchivesList.elementAt(1).name,
-                          price: newAchivesList.elementAt(1).price,
-                        ),
-                      ),
-                    ],
+                      );
+                    },
+                    child: SingleProduct(
+                      image: homeNewAchivesData.image,
+                      name: homeNewAchivesData.name,
+                      price: homeNewAchivesData.price,
+                    ),
                   ),
                 ],
-              ),
-            ],
+              );
+            }).toList(),
           ),
         ),
       ],
@@ -442,7 +407,9 @@ class _HomePageState extends State<HomePage> {
     ProductProvider productProvider = Provider.of(context, listen: false);
     productProvider.getFeatureData();
     productProvider.getNewAchivesData();
-    
+    productProvider.getHomeFeatureData();
+    productProvider.getHomeNewAchivesData();
+
     super.initState();
   }
 
