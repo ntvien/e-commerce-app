@@ -16,7 +16,7 @@ class SingleProduct extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Container(
-                height: 190,
+                height: 170,
                 width: 150,
                 decoration: BoxDecoration(
                     image: DecorationImage(
@@ -32,9 +32,11 @@ class SingleProduct extends StatelessWidget {
                   fontSize: 17,
                   color: Color(0xff9b96d6)),
             ),
-            Text(
-              "$name",
-              style: TextStyle(fontSize: 17),
+            Container(
+              child: Text(
+                "$name",
+                style: TextStyle(fontSize: 17),
+              ),
             )
           ],
         ),
