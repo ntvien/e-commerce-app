@@ -162,7 +162,7 @@ class _DetailScreenState extends State<DetailScreen> {
         SizedBox(
           height: 10,
         ),
-        Text("Quanitity", style: myStyle),
+        Text("Quantity", style: myStyle),
         SizedBox(
           height: 10,
         ),
