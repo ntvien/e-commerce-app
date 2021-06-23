@@ -1,8 +1,133 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_app/model/categoryicon.dart';
 import 'package:e_commerce_app/model/product.dart';
 import 'package:flutter/material.dart';
 
 class CategoryProvider with ChangeNotifier {
+  /////////////// Dress Icon Category /////////////////
+  late CategoryIcon dressIconData;
+  List<CategoryIcon> dressIcon = [];
+
+  Future<void> getDressIconData() async {
+    List<CategoryIcon> newList = [];
+    QuerySnapshot dressIconSnapShot =
+        await Firestore.instance.collection("categoryicon").
+        document("0AAFerqp4Um5oDmJ14Ty").collection("dress").getDocuments();
+    dressIconSnapShot.documents.forEach(
+      (element) {
+        dressIconData = CategoryIcon(
+          image: element.data["image"],
+        );
+        newList.add(dressIconData);
+      },
+    );
+    dressIcon = newList;
+    notifyListeners();
+  }
+
+  List<CategoryIcon> get getDressIconList {
+    return dressIcon;
+  }
+
+  /////////////// Shirt Icon Category /////////////////
+  late CategoryIcon shirtIconData;
+  List<CategoryIcon> shirtIcon = [];
+
+  Future<void> getShirtIconData() async {
+    List<CategoryIcon> newList = [];
+    QuerySnapshot shirtIconSnapShot =
+    await Firestore.instance.collection("categoryicon").
+    document("0AAFerqp4Um5oDmJ14Ty").collection("shirt").getDocuments();
+    shirtIconSnapShot.documents.forEach(
+          (element) {
+        shirtIconData = CategoryIcon(
+          image: element.data["image"],
+        );
+        newList.add(shirtIconData);
+      },
+    );
+    shirtIcon = newList;
+    notifyListeners();
+  }
+
+  List<CategoryIcon> get getShirtIconList {
+    return shirtIcon;
+  }
+
+  /////////////// Shoes Icon Category /////////////////
+  late CategoryIcon shoesIconData;
+  List<CategoryIcon> shoesIcon = [];
+
+  Future<void> getShoesIconData() async {
+    List<CategoryIcon> newList = [];
+    QuerySnapshot shoesIconSnapShot =
+    await Firestore.instance.collection("categoryicon").
+    document("0AAFerqp4Um5oDmJ14Ty").collection("shoes").getDocuments();
+    shoesIconSnapShot.documents.forEach(
+          (element) {
+        shoesIconData = CategoryIcon(
+          image: element.data["image"],
+        );
+        newList.add(shoesIconData);
+      },
+    );
+    shoesIcon = newList;
+    notifyListeners();
+  }
+
+  List<CategoryIcon> get getShoesIconList {
+    return shoesIcon;
+  }
+
+  /////////////// Pant Icon Category /////////////////
+  late CategoryIcon pantIconData;
+  List<CategoryIcon> pantIcon = [];
+
+  Future<void> getPantIconData() async {
+    List<CategoryIcon> newList = [];
+    QuerySnapshot pantIconSnapShot =
+    await Firestore.instance.collection("categoryicon").
+    document("0AAFerqp4Um5oDmJ14Ty").collection("pant").getDocuments();
+    pantIconSnapShot.documents.forEach(
+          (element) {
+        pantIconData = CategoryIcon(
+          image: element.data["image"],
+        );
+        newList.add(pantIconData);
+      },
+    );
+    pantIcon = newList;
+    notifyListeners();
+  }
+
+  List<CategoryIcon> get getPantIconList {
+    return pantIcon;
+  }
+
+  /////////////// Tie Icon Category /////////////////
+  late CategoryIcon tieIconData;
+  List<CategoryIcon> tieIcon = [];
+
+  Future<void> getTieIconData() async {
+    List<CategoryIcon> newList = [];
+    QuerySnapshot tieIconSnapShot =
+    await Firestore.instance.collection("categoryicon").
+    document("0AAFerqp4Um5oDmJ14Ty").collection("tie").getDocuments();
+    tieIconSnapShot.documents.forEach(
+          (element) {
+        tieIconData = CategoryIcon(
+          image: element.data["image"],
+        );
+        newList.add(tieIconData);
+      },
+    );
+    tieIcon = newList;
+    notifyListeners();
+  }
+
+  List<CategoryIcon> get getTieIconList {
+    return tieIcon;
+  }
 
   /////////////// Dress Category /////////////////
   late Product dressData;
@@ -16,7 +141,7 @@ class CategoryProvider with ChangeNotifier {
         .collection("dress")
         .getDocuments();
     dressSnapShot.documents.forEach(
-          (element) {
+      (element) {
         dressData = Product(
           name: element.data["name"],
           image: element.data["image"],
@@ -29,7 +154,7 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Product> get getDressList{
+  List<Product> get getDressList {
     return dress;
   }
 
@@ -58,7 +183,7 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Product> get getShirtList{
+  List<Product> get getShirtList {
     return shirt;
   }
 
@@ -74,7 +199,7 @@ class CategoryProvider with ChangeNotifier {
         .collection("shoes")
         .getDocuments();
     shoesSnapShot.documents.forEach(
-          (element) {
+      (element) {
         shoesData = Product(
           name: element.data["name"],
           image: element.data["image"],
@@ -87,7 +212,7 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Product> get getShoesList{
+  List<Product> get getShoesList {
     return shoes;
   }
 
@@ -103,7 +228,7 @@ class CategoryProvider with ChangeNotifier {
         .collection("pant")
         .getDocuments();
     pantSnapShot.documents.forEach(
-          (element) {
+      (element) {
         pantData = Product(
           name: element.data["name"],
           image: element.data["image"],
@@ -116,7 +241,7 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Product> get getPantList{
+  List<Product> get getPantList {
     return pant;
   }
 
@@ -132,7 +257,7 @@ class CategoryProvider with ChangeNotifier {
         .collection("tie")
         .getDocuments();
     tieSnapShot.documents.forEach(
-          (element) {
+      (element) {
         tieData = Product(
           name: element.data["name"],
           image: element.data["image"],
@@ -145,8 +270,7 @@ class CategoryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<Product> get getTieList{
+  List<Product> get getTieList {
     return tie;
   }
-
 }
