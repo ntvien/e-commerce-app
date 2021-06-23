@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/model/categoryicon.dart';
 import 'package:e_commerce_app/provider/category_provider.dart';
 import 'package:e_commerce_app/provider/product_provider.dart';
 import 'package:e_commerce_app/screens/detailscreen.dart';
@@ -9,7 +10,6 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import '../model/product.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -27,11 +27,6 @@ class _HomePageState extends State<HomePage> {
   late CategoryProvider categoryProvider;
   late ProductProvider productProvider;
 
-  Product? menData;
-  Product? womenData;
-  Product? bulbData;
-  Product? smartPhoneData;
-
   Widget _buildCategoryProduct({String? image, int? color}) {
     return CircleAvatar(
       maxRadius: 38,
@@ -40,7 +35,7 @@ class _HomePageState extends State<HomePage> {
         height: 40,
         child: Image(
           color: Colors.white,
-          image: AssetImage("images/$image"),
+          image: NetworkImage("$image"),
         ),
       ),
     );
@@ -133,13 +128,157 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildCategory() {
+  Widget _buildDressIcon() {
     List<Product> dressList = categoryProvider.getDressList;
-    List<Product> shirtList = categoryProvider.getShirtList;
-    List<Product> shoesList = categoryProvider.getShoesList;
-    List<Product> pantList = categoryProvider.getPantList;
-    List<Product> tieList = categoryProvider.getTieList;
+    List<CategoryIcon> dressIconList = categoryProvider.getDressIconList;
 
+    return Row(
+      children: dressIconList.map((dressIcon) {
+        return Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => ListProduct(
+                      name: "Dress",
+                      snapShot: dressList,
+                    ),
+                  ),
+                );
+              },
+              child: _buildCategoryProduct(
+                image: dressIcon.image,
+                color: 0xff33dcfd,
+              ),
+            ),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildShirtIcon() {
+    List<Product> shirtList = categoryProvider.getShirtList;
+    List<CategoryIcon> shirtIconList = categoryProvider.getShirtIconList;
+
+    return Row(
+      children: shirtIconList.map((shirtIcon) {
+        return Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => ListProduct(
+                      name: "Dress",
+                      snapShot: shirtList,
+                    ),
+                  ),
+                );
+              },
+              child: _buildCategoryProduct(
+                image: shirtIcon.image,
+                color: 0xfff38cdd,
+              ),
+            ),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildShoesIcon() {
+    List<Product> shoesList = categoryProvider.getShoesList;
+    List<CategoryIcon> shoesIconList = categoryProvider.getShoesIconList;
+
+    return Row(
+      children: shoesIconList.map((shoesIcon) {
+        return Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => ListProduct(
+                      name: "Dress",
+                      snapShot: shoesList,
+                    ),
+                  ),
+                );
+              },
+              child: _buildCategoryProduct(
+                image: shoesIcon.image,
+                color: 0xff4ff2af,
+              ),
+            ),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildPantIcon() {
+    List<Product> pantList = categoryProvider.getPantList;
+    List<CategoryIcon> pantIconList = categoryProvider.getPantIconList;
+
+    return Row(
+      children: pantIconList.map((pantIcon) {
+        return Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => ListProduct(
+                      name: "Dress",
+                      snapShot: pantList,
+                    ),
+                  ),
+                );
+              },
+              child: _buildCategoryProduct(
+                image: pantIcon.image,
+                color: 0xff74acf7,
+              ),
+            ),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildTieIcon() {
+    List<Product> tieList = categoryProvider.getTieList;
+    List<CategoryIcon> tieIconList = categoryProvider.getTieIconList;
+
+    return Row(
+      children: tieIconList.map((tieIcon) {
+        return Row(
+          children: [
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (ctx) => ListProduct(
+                      name: "Dress",
+                      snapShot: tieList,
+                    ),
+                  ),
+                );
+              },
+              child: _buildCategoryProduct(
+                image: tieIcon.image,
+                color: 0xff74acf7,
+              ),
+            ),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildCategory() {
     return Column(
       children: [
         Container(
@@ -164,86 +303,11 @@ class _HomePageState extends State<HomePage> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => ListProduct(
-                          name: "Dress",
-                          snapShot: dressList,
-                        ),
-                      ),
-                    );
-                  },
-                  child: _buildCategoryProduct(
-                    image: "dress.png",
-                    color: 0xff33dcfd,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => ListProduct(
-                          name: "Shirt",
-                          snapShot: shirtList,
-                        ),
-                      ),
-                    );
-                  },
-                  child: _buildCategoryProduct(
-                    image: "shirt.png",
-                    color: 0xfff38cdd,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => ListProduct(
-                          name: "Shoes",
-                          snapShot: shoesList,
-                        ),
-                      ),
-                    );
-                  },
-                  child: _buildCategoryProduct(
-                    image: "shoes.png",
-                    color: 0xff4ff2af,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => ListProduct(
-                          name: "Pant",
-                          snapShot: pantList,
-                        ),
-                      ),
-                    );
-                  },
-                  child: _buildCategoryProduct(
-                    image: "pant.png",
-                    color: 0xff74acf7,
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => ListProduct(
-                          name: "Tie",
-                          snapShot: tieList,
-                        ),
-                      ),
-                    );
-                  },
-                  child: _buildCategoryProduct(
-                    image: "tie.png",
-                    color: 0xff74acf7,
-                  ),
-                ),
+                _buildDressIcon(),
+                _buildShirtIcon(),
+                _buildShoesIcon(),
+                _buildPantIcon(),
+                _buildTieIcon(),
               ],
             ),
           ),
@@ -403,6 +467,11 @@ class _HomePageState extends State<HomePage> {
     categoryProvider.getShoesData();
     categoryProvider.getPantData();
     categoryProvider.getTieData();
+    categoryProvider.getDressIconData();
+    categoryProvider.getShirtIconData();
+    categoryProvider.getShoesIconData();
+    categoryProvider.getPantIconData();
+    categoryProvider.getTieIconData();
 
     ProductProvider productProvider = Provider.of(context, listen: false);
     productProvider.getFeatureData();
@@ -464,7 +533,7 @@ class _HomePageState extends State<HomePage> {
                     _buildFeature(),
                     _buildNewAchives(),
                   ],
-                )
+                ),
               ],
             ),
           ),
