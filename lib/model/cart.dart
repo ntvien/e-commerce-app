@@ -5,5 +5,13 @@ class Cart {
   final String? image;
   final double? price;
   final int? quantity;
-  Cart({this.name, this.image, this.price, this.quantity});
+  final String? color;
+  final String? size;
+  Cart(
+      {this.name,
+      this.image,
+      this.price,
+      this.quantity,
+      this.color,
+      this.size});
 }
