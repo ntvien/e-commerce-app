@@ -1,86 +1,125 @@
 import 'package:e_commerce_app/model/product.dart';
+import 'package:e_commerce_app/provider/category_provider.dart';
+import 'package:e_commerce_app/provider/product_provider.dart';
+import 'package:e_commerce_app/screens/detail_screen.dart';
 import 'package:e_commerce_app/screens/home_screen.dart';
 import 'package:e_commerce_app/widgets/single_product.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ListProduct extends StatelessWidget {
   final String? name;
-  List<Product>? snapShot = [];
-  ListProduct({this.name, this.snapShot});
+  bool? isCategory = true;
+  final List<Product>? snapShot;
+  ListProduct({this.name, this.isCategory, this.snapShot});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        iconTheme: IconThemeData(color: Colors.black),
-        actions: [
-          IconButton(
-            onPressed: () {},
+  Widget _buildTopName() {
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 25,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    name!,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buildMyGridView(context) {
+    final Orientation orientation = MediaQuery.of(context).orientation;
+
+    return Container(
+      height: 700,
+      child: GridView.count(
+        crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+        childAspectRatio: orientation == Orientation.portrait ? 0.8 : 0.9,
+        scrollDirection: Axis.vertical,
+        children: snapShot!
+            .map(
+              (e) => GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (ctx) => DetailScreen(
+                            image: e.image,
+                            name: e.name,
+                            price: e.price,
+                          )));
+                },
+                child: SingleProduct(
+                  price: e.price,
+                  image: e.image,
+                  name: e.name,
+                ),
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
+
+  late CategoryProvider categoryProvider;
+  late ProductProvider productProvider;
+  Widget _buildSearchBar(context) {
+    return isCategory == true
+        ? IconButton(
             icon: Icon(
               Icons.search,
               color: Colors.black,
             ),
-          ),
-          IconButton(
             onPressed: () {},
+          )
+        : IconButton(
             icon: Icon(
-              Icons.notifications_none,
+              Icons.search,
               color: Colors.black,
             ),
-          )
+            onPressed: () {},
+          );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    categoryProvider = Provider.of<CategoryProvider>(context);
+    productProvider = Provider.of<ProductProvider>(context);
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => HomeScreen(),
+                ),
+              );
+            }),
+        actions: <Widget>[
+          _buildSearchBar(context),
         ],
       ),
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 20),
         child: ListView(
-          children: [
-            Column(
-              children: [
-                Container(
-                  height: 30,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            name!,
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  height: 550,
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    childAspectRatio: 0.7,
-                    scrollDirection: Axis.vertical,
-                    children: snapShot!
-                        .map(
-                          (element) => SingleProduct(
-                            image: element.image,
-                            name: element.name,
-                            price: element.price,
-                          ),
-                        )
-                        .toList(),
-                  ),
-                )
-              ],
-            ),
+          children: <Widget>[
+            _buildTopName(),
+            SizedBox(height: 10),
+            _buildMyGridView(context),
           ],
         ),
       ),
