@@ -1,53 +1,54 @@
 import 'package:e_commerce_app/provider/category_provider.dart';
 import 'package:e_commerce_app/provider/product_provider.dart';
-import 'package:e_commerce_app/screens/cart_screen.dart';
-import 'package:e_commerce_app/screens/checkout.dart';
-import 'package:e_commerce_app/screens/detail_screen.dart';
 import 'package:e_commerce_app/screens/home_screen.dart';
-import 'package:e_commerce_app/screens/list_product.dart';
-import 'package:e_commerce_app/screens/welcome_screen.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:e_commerce_app/screens/signin.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Color(0xffaf7373),
-        scaffoldBackgroundColor: Colors.white,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Builder(
-        builder: (context) {
-          return MultiProvider(
-            providers: [
-              ChangeNotifierProvider<ProductProvider>(
-                  create: (context) => ProductProvider()),
-              ChangeNotifierProvider<CategoryProvider>(
-                  create: (context) => CategoryProvider()),
-            ],
-            child: StreamBuilder(
-              stream: FirebaseAuth.instance.onAuthStateChanged,
-              builder: (context, snapShot) {
-                if (snapShot.hasData) {
-                  return HomeScreen();
-                } else {
-                  return HomeScreen();
-                }
-              },
-            ),
-          );
-        },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<CategoryProvider>(
+          create: (context) => CategoryProvider(),
+        ),
+        ChangeNotifierProvider<ProductProvider>(
+          create: (context) => ProductProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          // primaryColor: Color(0xff746bc9),
+          iconTheme: IconThemeData(color: Colors.black),
+          primaryColor: Colors.teal,
+          appBarTheme: AppBarTheme(color: Colors.teal, centerTitle: true),
+          bottomAppBarColor: Colors.teal,
+          floatingActionButtonTheme: FloatingActionButtonThemeData(
+            backgroundColor: Colors.orange,
+          ),
+        ),
+        debugShowCheckedModeBanner: false,
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return HomeScreen();
+            } else {
+              return HomeScreen();
+            }
+          },
+        ),
       ),
     );
   }
