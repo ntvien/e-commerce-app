@@ -1,12 +1,12 @@
 import 'package:e_commerce_app/screens/signup.dart';
-import 'package:e_commerce_app/widgets/changescreen.dart';
-import 'package:e_commerce_app/widgets/mytextformfield.dart';
-import 'package:e_commerce_app/widgets/passwordtextformfield.dart';
+import 'package:e_commerce_app/widgets/change_screen.dart';
+import 'package:e_commerce_app/widgets/my_text_form_field.dart';
+import 'package:e_commerce_app/widgets/password_text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../widgets/mybutton.dart';
+import '../widgets/my_button.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 

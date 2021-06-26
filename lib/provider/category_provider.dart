@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce_app/model/categoryicon.dart';
+import 'package:e_commerce_app/model/category_icon.dart';
 import 'package:e_commerce_app/model/product.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +10,11 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getDressIconData() async {
     List<CategoryIcon> newList = [];
-    QuerySnapshot dressIconSnapShot =
-        await Firestore.instance.collection("categoryicon").
-        document("0AAFerqp4Um5oDmJ14Ty").collection("dress").getDocuments();
+    QuerySnapshot dressIconSnapShot = await Firestore.instance
+        .collection("categoryicon")
+        .document("0AAFerqp4Um5oDmJ14Ty")
+        .collection("dress")
+        .getDocuments();
     dressIconSnapShot.documents.forEach(
       (element) {
         dressIconData = CategoryIcon(
@@ -35,11 +37,13 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getShirtIconData() async {
     List<CategoryIcon> newList = [];
-    QuerySnapshot shirtIconSnapShot =
-    await Firestore.instance.collection("categoryicon").
-    document("0AAFerqp4Um5oDmJ14Ty").collection("shirt").getDocuments();
+    QuerySnapshot shirtIconSnapShot = await Firestore.instance
+        .collection("categoryicon")
+        .document("0AAFerqp4Um5oDmJ14Ty")
+        .collection("shirt")
+        .getDocuments();
     shirtIconSnapShot.documents.forEach(
-          (element) {
+      (element) {
         shirtIconData = CategoryIcon(
           image: element.data["image"],
         );
@@ -60,11 +64,13 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getShoesIconData() async {
     List<CategoryIcon> newList = [];
-    QuerySnapshot shoesIconSnapShot =
-    await Firestore.instance.collection("categoryicon").
-    document("0AAFerqp4Um5oDmJ14Ty").collection("shoes").getDocuments();
+    QuerySnapshot shoesIconSnapShot = await Firestore.instance
+        .collection("categoryicon")
+        .document("0AAFerqp4Um5oDmJ14Ty")
+        .collection("shoes")
+        .getDocuments();
     shoesIconSnapShot.documents.forEach(
-          (element) {
+      (element) {
         shoesIconData = CategoryIcon(
           image: element.data["image"],
         );
@@ -85,11 +91,13 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getPantIconData() async {
     List<CategoryIcon> newList = [];
-    QuerySnapshot pantIconSnapShot =
-    await Firestore.instance.collection("categoryicon").
-    document("0AAFerqp4Um5oDmJ14Ty").collection("pant").getDocuments();
+    QuerySnapshot pantIconSnapShot = await Firestore.instance
+        .collection("categoryicon")
+        .document("0AAFerqp4Um5oDmJ14Ty")
+        .collection("pant")
+        .getDocuments();
     pantIconSnapShot.documents.forEach(
-          (element) {
+      (element) {
         pantIconData = CategoryIcon(
           image: element.data["image"],
         );
@@ -110,11 +118,13 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getTieIconData() async {
     List<CategoryIcon> newList = [];
-    QuerySnapshot tieIconSnapShot =
-    await Firestore.instance.collection("categoryicon").
-    document("0AAFerqp4Um5oDmJ14Ty").collection("tie").getDocuments();
+    QuerySnapshot tieIconSnapShot = await Firestore.instance
+        .collection("categoryicon")
+        .document("0AAFerqp4Um5oDmJ14Ty")
+        .collection("tie")
+        .getDocuments();
     tieIconSnapShot.documents.forEach(
-          (element) {
+      (element) {
         tieIconData = CategoryIcon(
           image: element.data["image"],
         );

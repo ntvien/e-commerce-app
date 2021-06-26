@@ -1,7 +1,7 @@
-import 'package:e_commerce_app/widgets/changescreen.dart';
-import 'package:e_commerce_app/widgets/mybutton.dart';
-import 'package:e_commerce_app/widgets/mytextformfield.dart';
-import 'package:e_commerce_app/widgets/passwordtextformfield.dart';
+import 'package:e_commerce_app/widgets/change_screen.dart';
+import 'package:e_commerce_app/widgets/my_button.dart';
+import 'package:e_commerce_app/widgets/my_text_form_field.dart';
+import 'package:e_commerce_app/widgets/password_text_form_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
