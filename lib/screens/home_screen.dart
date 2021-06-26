@@ -67,10 +67,10 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               setState(() {
                 homeColor = true;
-                contactUsColor = false;
                 checkoutColor = false;
                 aboutColor = false;
                 profileColor = false;
+                contactUsColor = false;
               });
             },
             leading: Icon(Icons.home),
@@ -80,11 +80,11 @@ class _HomeScreenState extends State<HomeScreen> {
             selected: checkoutColor,
             onTap: () {
               setState(() {
-                checkoutColor = true;
-                contactUsColor = false;
                 homeColor = false;
-                profileColor = false;
+                checkoutColor = true;
                 aboutColor = false;
+                profileColor = false;
+                contactUsColor = false;
               });
               Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (ctx) => CheckOut()));
@@ -96,11 +96,11 @@ class _HomeScreenState extends State<HomeScreen> {
             selected: aboutColor,
             onTap: () {
               setState(() {
-                aboutColor = true;
-                contactUsColor = false;
                 homeColor = false;
-                profileColor = false;
                 checkoutColor = false;
+                aboutColor = true;
+                profileColor = false;
+                contactUsColor = false;
               });
             },
             leading: Icon(Icons.info),
@@ -110,11 +110,11 @@ class _HomeScreenState extends State<HomeScreen> {
             selected: profileColor,
             onTap: () {
               setState(() {
-                aboutColor = false;
-                contactUsColor = false;
                 homeColor = false;
-                profileColor = true;
                 checkoutColor = false;
+                aboutColor = false;
+                profileColor = true;
+                contactUsColor = false;
               });
             },
             leading: Icon(Icons.info),
@@ -124,11 +124,11 @@ class _HomeScreenState extends State<HomeScreen> {
             selected: contactUsColor,
             onTap: () {
               setState(() {
-                contactUsColor = true;
-                checkoutColor = false;
-                profileColor = false;
                 homeColor = false;
+                checkoutColor = false;
                 aboutColor = false;
+                profileColor = false;
+                contactUsColor = true;
               });
             },
             leading: Icon(Icons.phone),
@@ -173,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: cameraIcon.map((e) {
                 return GestureDetector(
-                  onTap: (){},
+                  onTap: () {},
                   child: _buildImageSwipe(image: e.image),
                 );
               }).toList(),
@@ -184,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: shoesIcon.map((e) {
                 return GestureDetector(
-                  onTap: (){},
+                  onTap: () {},
                   child: _buildImageSwipe(image: e.image),
                 );
               }).toList(),
@@ -195,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: watchIcon.map((e) {
                 return GestureDetector(
-                  onTap: (){},
+                  onTap: () {},
                   child: _buildImageSwipe(image: e.image),
                 );
               }).toList(),
@@ -356,9 +356,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildFeature() {
-    List<Product> featureProduct;
-    featureProduct = productProvider.getFeatureList;
-
+    List<Product> featureProduct = productProvider.getFeatureList;
     return Column(
       children: <Widget>[
         Row(
@@ -387,37 +385,21 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ],
         ),
-        Row(
-          children: productProvider.getHomeFeatureList.map((e) {
-            return Expanded(
-              child: Row(
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: productProvider.getHomeFeatureList.map((e) {
+              return Row(
                 children: <Widget>[
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (ctx) => DetailScreen(
-                              image: e.image,
-                              price: e.price,
-                              name: e.name,
-                            ),
-                          ),
-                        );
-                      },
-                      child: SingleProduct(
-                        image: e.image,
-                        price: e.price,
-                        name: e.name,
-                      ),
-                    ),
-                  ),
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (ctx) => DetailScreen(
-                              image: e.image, price: e.price, name: e.name),
+                            image: e.image,
+                            price: e.price,
+                            name: e.name,
+                          ),
                         ),
                       );
                     },
@@ -428,9 +410,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ],
-              ),
-            );
-          }).toList(),
+              );
+            }).toList(),
+          ),
         ),
       ],
     );
@@ -474,58 +456,36 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        Row(
-            children: productProvider.getHomeNewAchivesList.map((e) {
-          return Expanded(
-            child: Column(
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+              children: productProvider.getHomeNewAchivesList.map((e) {
+            return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    Expanded(
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (ctx) => DetailScreen(
-                                      image: e.image,
-                                      price: e.price,
-                                      name: e.name,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: SingleProduct(
-                                  image: e.image, price: e.price, name: e.name),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (ctx) => DetailScreen(
+                              image: e.image,
+                              price: e.price,
+                              name: e.name,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (ctx) => DetailScreen(
-                                    image: e.image,
-                                    price: e.price,
-                                    name: e.name,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: SingleProduct(
-                                image: e.image, price: e.price, name: e.name),
-                          )
-                        ],
-                      ),
+                        );
+                      },
+                      child: SingleProduct(
+                          image: e.image, price: e.price, name: e.name),
                     )
                   ],
                 ),
               ],
-            ),
-          );
-        }).toList()),
+            );
+          }).toList()),
+        ),
       ],
     );
   }

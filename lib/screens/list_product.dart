@@ -39,32 +39,32 @@ class ListProduct extends StatelessWidget {
 
   Widget _buildMyGridView(context) {
     final Orientation orientation = MediaQuery.of(context).orientation;
-
     return Container(
-      height: 700,
+      height: 550,
       child: GridView.count(
         crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
         childAspectRatio: orientation == Orientation.portrait ? 0.8 : 0.9,
         scrollDirection: Axis.vertical,
-        children: snapShot!
-            .map(
-              (e) => GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (ctx) => DetailScreen(
-                            image: e.image,
-                            name: e.name,
-                            price: e.price,
-                          )));
-                },
-                child: SingleProduct(
-                  price: e.price,
-                  image: e.image,
-                  name: e.name,
+        children: snapShot!.map((e) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => DetailScreen(
+                    image: e.image,
+                    name: e.name,
+                    price: e.price,
+                  ),
                 ),
-              ),
-            )
-            .toList(),
+              );
+            },
+            child: SingleProduct(
+              price: e.price,
+              image: e.image,
+              name: e.name,
+            ),
+          );
+        }).toList(),
       ),
     );
   }

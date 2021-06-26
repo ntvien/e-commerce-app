@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/provider/product_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:provider/provider.dart';
@@ -83,6 +84,7 @@ class _CheckOutSingleProductState extends State<CheckOutSingleProduct> {
 
   Widget _buildCountOrNot() {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 5),
       height: 35,
       width: width! * 0.2 + 20,
       color: Color(0xfff2f2f2),

@@ -21,7 +21,8 @@ class _CheckOutState extends State<CheckOut> {
 
   late ProductProvider productProvider;
 
-  Widget _buildBottomSingleDetail({String? startName, String? endName}) {
+  Widget _buildBottomSingleDetail({String? startName, String? endName, bool? isDiscount}) {
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -31,7 +32,7 @@ class _CheckOutState extends State<CheckOut> {
         ),
         Text(
           endName!,
-          style: myStyle,
+          style: isDiscount == false ? myStyle: TextStyle(color: Colors.red, fontSize: 18),
         ),
       ],
     );
@@ -153,18 +154,22 @@ class _CheckOutState extends State<CheckOut> {
                       _buildBottomSingleDetail(
                         startName: "Subtotal",
                         endName: "\$ ${subTotal.toStringAsFixed(2)}",
+                        isDiscount: false,
                       ),
                       _buildBottomSingleDetail(
                         startName: "Discount",
                         endName: "${discount.toStringAsFixed(2)}%",
+                        isDiscount: true,
                       ),
                       _buildBottomSingleDetail(
                         startName: "Shipping",
                         endName: "\$ ${shipping.toStringAsFixed(2)}",
+                        isDiscount: false,
                       ),
                       _buildBottomSingleDetail(
                         startName: "Total",
                         endName: "\$ ${total!.toStringAsFixed(2)}",
+                        isDiscount: false,
                       ),
                     ],
                   ),
