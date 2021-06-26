@@ -1,70 +1,53 @@
-import 'package:e_commerce_app/model/cart.dart';
 import 'package:e_commerce_app/provider/product_provider.dart';
-import 'package:e_commerce_app/screens/cart_screen.dart';
 import 'package:e_commerce_app/screens/checkout.dart';
+import 'package:e_commerce_app/screens/home_screen.dart';
 import 'package:e_commerce_app/widgets/my_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:provider/provider.dart';
 
 class DetailScreen extends StatefulWidget {
   final String? image;
   final String? name;
   final double? price;
-  final ProductProvider? productProvider;
-  DetailScreen({this.image, this.name, this.price, this.productProvider});
-
+  DetailScreen({this.image, this.name, this.price});
   @override
   _DetailScreenState createState() => _DetailScreenState();
 }
 
 class _DetailScreenState extends State<DetailScreen> {
   int count = 1;
-  final TextStyle myStyle = TextStyle(fontSize: 18);
-
-  Widget _buildSizeProduct({String? size}) {
-    return Container(
-      height: 60,
-      width: 60,
-      color: Color(0xfff2f2f2),
-      child: Center(
-        child: Text(
-          "$size",
-          style: TextStyle(fontSize: 17),
-        ),
-      ),
-    );
-  }
+  late ProductProvider productProvider;
 
   Widget _buildColorProduct({Color? color}) {
     return Container(
-      height: 60,
-      width: 60,
+      height: 40,
+      width: 40,
       color: color,
     );
   }
 
+  final TextStyle myStyle = TextStyle(
+    fontSize: 18,
+  );
   Widget _buildImage() {
     return Center(
-      child: Row(
-        children: [
-          Container(
-            width: 220,
-            child: Card(
-              child: Container(
-                padding: EdgeInsets.all(13),
-                child: Container(
-                  height: 220,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage("${widget.image}"),
-                    ),
-                  ),
+      child: Container(
+        width: 380,
+        child: Card(
+          child: Container(
+            padding: EdgeInsets.all(13),
+            child: Container(
+              height: 260,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: NetworkImage("${widget.image}"),
                 ),
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -73,23 +56,20 @@ class _DetailScreenState extends State<DetailScreen> {
     return Container(
       height: 100,
       child: Row(
-        children: [
+        children: <Widget>[
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "${widget.name}",
-                style: myStyle,
-              ),
+            children: <Widget>[
+              Text("${widget.name}", style: myStyle),
               Text(
                 "\$ ${widget.price.toString()}",
-                style: TextStyle(fontSize: 18, color: Color(0xff9b96d6)),
+                style: TextStyle(
+                    color: Color(0xff9b96d6),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
               ),
-              Text(
-                "Description",
-                style: myStyle,
-              ),
+              Text("Description", style: myStyle),
             ],
           ),
         ],
@@ -99,38 +79,99 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget _buildDescription() {
     return Container(
-      height: 100,
+      height: 170,
       child: Wrap(
-        children: [
+        children: <Widget>[
           Text(
-            "Về cách chơi, với ưu thế chỉ cần 1 điểm trước UAE là đủ để tuyển Việt Nam "
-            "giữ ngôi đầu bảng và đi thẳng vào vòng loại kế tiếp của World Cup 2022 "
-            "nhiều người sẽ nghĩ HLV Park Hang Seo sẽ cho đội nhà chơi phòng ngự.",
-            style: TextStyle(fontSize: 15),
-          ),
+            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. ",
+            style: TextStyle(fontSize: 16),
+          )
         ],
       ),
     );
   }
 
+  List<bool> sized = [true, false, false, false];
+  List<bool> colored = [true, false, false, false];
+  int sizeIndex = 0;
+  String? size;
+  void getSize() {
+    if (sizeIndex == 0) {
+      setState(() {
+        size = "S";
+      });
+    } else if (sizeIndex == 1) {
+      setState(() {
+        size = "M";
+      });
+    } else if (sizeIndex == 2) {
+      setState(() {
+        size = "L";
+      });
+    } else if (sizeIndex == 3) {
+      setState(() {
+        size = "XL";
+      });
+    }
+  }
+
+  int colorIndex = 0;
+  String? color;
+  void getColor() {
+    if (colorIndex == 0) {
+      setState(() {
+        color = "Light Blue";
+      });
+    } else if (colorIndex == 1) {
+      setState(() {
+        color = "Light Green";
+      });
+    } else if (colorIndex == 2) {
+      setState(() {
+        color = "Light Yellow";
+      });
+    } else if (colorIndex == 3) {
+      setState(() {
+        color = "Cyan";
+      });
+    }
+  }
+
   Widget _buildSizePart() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("Size", style: myStyle),
+      children: <Widget>[
+        Text(
+          "Size",
+          style: myStyle,
+        ),
         SizedBox(
           height: 15,
         ),
         Container(
-          width: 270,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          width: 265,
+          child: ToggleButtons(
             children: [
-              _buildSizeProduct(size: "S"),
-              _buildSizeProduct(size: "M"),
-              _buildSizeProduct(size: "L"),
-              _buildSizeProduct(size: "XXL"),
+              Text("S"),
+              Text("M"),
+              Text("L"),
+              Text("XL"),
             ],
+            onPressed: (int index) {
+              setState(() {
+                for (int indexBtn = 0; indexBtn < sized.length; indexBtn++) {
+                  if (indexBtn == index) {
+                    sized[indexBtn] = true;
+                  } else {
+                    sized[indexBtn] = false;
+                  }
+                }
+              });
+              setState(() {
+                sizeIndex = index;
+              });
+            },
+            isSelected: sized,
           ),
         ),
       ],
@@ -140,24 +181,43 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget _buildColorPart() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         SizedBox(
-          height: 15,
+          height: 10,
         ),
-        Text("Color", style: myStyle),
+        Text(
+          "Color",
+          style: myStyle,
+        ),
         SizedBox(
           height: 15,
         ),
         Container(
-          width: 270,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          width: 265,
+          child: ToggleButtons(
+            fillColor: Color(0xff746bc9),
+            renderBorder: false,
             children: [
-              _buildColorProduct(color: Colors.blue[300]),
-              _buildColorProduct(color: Colors.green[300]),
-              _buildColorProduct(color: Colors.yellow[300]),
+              _buildColorProduct(color: Colors.blue[200]),
+              _buildColorProduct(color: Colors.green[200]),
+              _buildColorProduct(color: Colors.yellow[200]),
               _buildColorProduct(color: Colors.cyan[300]),
             ],
+            onPressed: (int index) {
+              setState(() {
+                for (int indexBtn = 0; indexBtn < colored.length; indexBtn++) {
+                  if (indexBtn == index) {
+                    colored[indexBtn] = true;
+                  } else {
+                    colored[indexBtn] = false;
+                  }
+                }
+              });
+              setState(() {
+                colorIndex = index;
+              });
+            },
+            isSelected: colored,
           ),
         ),
       ],
@@ -167,11 +227,14 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget _buildQuantityPart() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         SizedBox(
           height: 10,
         ),
-        Text("Quantity", style: myStyle),
+        Text(
+          "Quantity",
+          style: myStyle,
+        ),
         SizedBox(
           height: 10,
         ),
@@ -179,14 +242,16 @@ class _DetailScreenState extends State<DetailScreen> {
           height: 40,
           width: 130,
           decoration: BoxDecoration(
-            color: Colors.blue[300],
-            borderRadius: BorderRadius.circular(20),
+            color: Color(0xff746bc9),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
+            children: <Widget>[
               GestureDetector(
-                child: Icon(Icons.remove),
+                child: Icon(
+                  Icons.remove,
+                  color: Colors.white,
+                ),
                 onTap: () {
                   setState(() {
                     if (count > 1) {
@@ -195,9 +260,15 @@ class _DetailScreenState extends State<DetailScreen> {
                   });
                 },
               ),
-              Text(count.toString(), style: myStyle),
+              Text(
+                count.toString(),
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
               GestureDetector(
-                child: Icon(Icons.add),
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
                 onTap: () {
                   setState(() {
                     count++;
@@ -211,21 +282,25 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget _buildButtonCheckOutPart() {
+  Widget _buildButtonPart() {
     return Container(
-      height: 50,
+      height: 60,
       child: MyButton(
-        name: "CheckOut",
+        name: "Add To Cart",
         onPressed: () {
-          widget.productProvider!.getCartData(
-            name: widget.name,
+          getSize();
+          getColor();
+          productProvider.getCheckOutData(
             image: widget.image,
+            color: color,
+            size: size,
+            name: widget.name,
             price: widget.price,
             quantity: count,
           );
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (ctx) => CartScreen(),
+              builder: (ctx) => CheckOut(),
             ),
           );
         },
@@ -235,46 +310,57 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Detail Page",
-          style: TextStyle(color: Colors.black),
-        ),
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        actions: [
-          IconButton(
-            onPressed: () {},
+    productProvider = Provider.of<ProductProvider>(context);
+    return WillPopScope(
+      onWillPop: () async {
+        return Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (ctx) => HomeScreen(),
+          ),
+        ) as Future<bool>;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text("Detail Page", style: TextStyle(color: Colors.black)),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          leading: IconButton(
             icon: Icon(
-              Icons.notifications_none,
+              Icons.arrow_back,
               color: Colors.black,
             ),
-          )
-        ],
-      ),
-      body: Container(
-        child: ListView(
-          children: [
-            _buildImage(),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildNameToDescriptionPart(),
-                  _buildDescription(),
-                  _buildSizePart(),
-                  _buildColorPart(),
-                  _buildQuantityPart(),
-                  SizedBox(height: 15),
-                  _buildButtonCheckOutPart(),
-                ],
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => HomeScreen(),
+                ),
+              );
+            },
+          ),
+          actions: <Widget>[],
+        ),
+        body: Container(
+          child: ListView(
+            children: <Widget>[
+              _buildImage(),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildNameToDescriptionPart(),
+                    _buildDescription(),
+                    _buildSizePart(),
+                    _buildColorPart(),
+                    _buildQuantityPart(),
+                    SizedBox(height: 15),
+                    _buildButtonPart(),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
