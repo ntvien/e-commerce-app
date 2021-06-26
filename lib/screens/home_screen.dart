@@ -1,9 +1,9 @@
-import 'package:e_commerce_app/model/categoryicon.dart';
+import 'package:e_commerce_app/model/category_icon.dart';
 import 'package:e_commerce_app/provider/category_provider.dart';
 import 'package:e_commerce_app/provider/product_provider.dart';
-import 'package:e_commerce_app/screens/detailscreen.dart';
-import 'package:e_commerce_app/screens/listproduct.dart';
-import 'package:e_commerce_app/widgets/singleproduct.dart';
+import 'package:e_commerce_app/screens/detail_screen.dart';
+import 'package:e_commerce_app/screens/list_product.dart';
+import 'package:e_commerce_app/widgets/single_product.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
@@ -11,12 +11,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import '../model/product.dart';
 
-class HomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _keyScaffold = GlobalKey<ScaffoldState>();
 
   bool homeColor = true;
@@ -367,6 +367,7 @@ class _HomePageState extends State<HomePage> {
                             image: homeFeatureData.image,
                             name: homeFeatureData.name,
                             price: homeFeatureData.price,
+                            productProvider: productProvider,
                           ),
                         ),
                       );
@@ -440,6 +441,7 @@ class _HomePageState extends State<HomePage> {
                             image: homeNewAchivesData.image,
                             name: homeNewAchivesData.name,
                             price: homeNewAchivesData.price,
+                            productProvider: productProvider,
                           ),
                         ),
                       );
@@ -478,6 +480,7 @@ class _HomePageState extends State<HomePage> {
     productProvider.getNewAchivesData();
     productProvider.getHomeFeatureData();
     productProvider.getHomeNewAchivesData();
+    productProvider.getCartData();
 
     super.initState();
   }

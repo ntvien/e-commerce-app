@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_app/model/cart.dart';
 import 'package:e_commerce_app/model/product.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductProvider with ChangeNotifier {
@@ -111,5 +113,23 @@ class ProductProvider with ChangeNotifier {
   List<Product> get getNewAchivesList {
     return newAchives;
     notifyListeners();
+  }
+
+  /////////////// Cart /////////////////
+  List<Cart> cartList = [];
+  late Cart cart;
+
+  void getCartData(
+      {String? name, String? image, int? quantity, double? price}) {
+    cart = Cart(name: name, image: image, quantity: quantity, price: price);
+    cartList.add(cart);
+  }
+
+  List<Cart> get getCartList {
+    return List.from(cartList);
+  }
+
+  int get getCartListLength {
+    return cartList.length;
   }
 }

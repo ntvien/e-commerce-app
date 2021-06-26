@@ -1,22 +1,24 @@
+import 'package:e_commerce_app/screens/checkout.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CartSingleProduct extends StatefulWidget {
   final String? name;
   final String? image;
-  final int? quantity;
+  int? quantity;
   final double? price;
-  CartSingleProduct({this.name, this.image, this.quantity, this.price});
+  bool? isCount;
+  CartSingleProduct(
+      {this.name, this.image, this.quantity, this.price, this.isCount});
   @override
   _CartSingleProductState createState() => _CartSingleProductState();
 }
 
 class _CartSingleProductState extends State<CartSingleProduct> {
-  int count = 0;
   final TextStyle myStyle = TextStyle(fontSize: 18);
 
   @override
   Widget build(BuildContext context) {
-    count = widget.quantity as int;
     return Container(
       height: 140,
       width: double.infinity,
@@ -60,32 +62,52 @@ class _CartSingleProductState extends State<CartSingleProduct> {
                         ),
                         Container(
                           height: 35,
-                          width: 120,
+                          width: widget.isCount == false ? 120 : 100,
                           color: Color(0xfff2f2f2),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              GestureDetector(
-                                child: Icon(Icons.remove),
-                                onTap: () {
-                                  setState(() {
-                                    if (count > 1) {
-                                      count--;
-                                    }
-                                  });
-                                },
-                              ),
-                              Text(count.toString(), style: myStyle),
-                              GestureDetector(
-                                child: Icon(Icons.add),
-                                onTap: () {
-                                  setState(() {
-                                    count++;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
+                          child: widget.isCount == false
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    GestureDetector(
+                                      child: Icon(Icons.remove),
+                                      onTap: () {
+                                        setState(
+                                          () {
+                                            if (widget.quantity! > 1) {
+                                              widget.quantity =
+                                                  (widget.quantity! - 1);
+                                            }
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    Text(widget.quantity.toString(),
+                                        style: myStyle),
+                                    GestureDetector(
+                                      child: Icon(Icons.add),
+                                      onTap: () {
+                                        setState(
+                                          () {
+                                            widget.quantity =
+                                                (widget.quantity! + 1);
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Quantity"),
+                                    Text(
+                                      widget.quantity.toString(),
+                                      style: TextStyle(fontSize: 18),
+                                    ),
+                                  ],
+                                ),
                         ),
                       ],
                     ),

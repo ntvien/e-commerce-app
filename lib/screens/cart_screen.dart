@@ -67,6 +67,7 @@ class _CartScreenState extends State<CartScreen> {
           itemCount: productProvider.getCartListLength,
           itemBuilder: (context, index) {
             return CartSingleProduct(
+              isCount: false,
               image: productProvider.getCartList[index].image,
               name: productProvider.getCartList[index].name,
               price: productProvider.getCartList[index].price,

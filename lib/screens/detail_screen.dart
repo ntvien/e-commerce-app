@@ -1,5 +1,8 @@
-import 'package:e_commerce_app/screens/cartscreen.dart';
-import 'package:e_commerce_app/screens/homepage.dart';
+import 'package:e_commerce_app/model/cart.dart';
+import 'package:e_commerce_app/provider/product_provider.dart';
+import 'package:e_commerce_app/screens/cart_screen.dart';
+import 'package:e_commerce_app/screens/checkout.dart';
+import 'package:e_commerce_app/widgets/my_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,7 +10,8 @@ class DetailScreen extends StatefulWidget {
   final String? image;
   final String? name;
   final double? price;
-  DetailScreen({this.image, this.name, this.price});
+  final ProductProvider? productProvider;
+  DetailScreen({this.image, this.name, this.price, this.productProvider});
 
   @override
   _DetailScreenState createState() => _DetailScreenState();
@@ -15,6 +19,7 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   int count = 1;
+  final TextStyle myStyle = TextStyle(fontSize: 18);
 
   Widget _buildSizeProduct({String? size}) {
     return Container(
@@ -40,22 +45,26 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget _buildImage() {
     return Center(
-      child: Container(
-        width: 220,
-        child: Card(
-          child: Container(
-            padding: EdgeInsets.all(13),
-            child: Container(
-              height: 220,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage("${widget.image}"),
+      child: Row(
+        children: [
+          Container(
+            width: 220,
+            child: Card(
+              child: Container(
+                padding: EdgeInsets.all(13),
+                child: Container(
+                  height: 220,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage("${widget.image}"),
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -204,31 +213,25 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget _buildButtonCheckOutPart() {
     return Container(
-      height: 60,
-      width: double.infinity,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        color: Colors.pink,
-        child: Text(
-          "Check Out",
-          style: myStyle,
-        ),
+      height: 50,
+      child: MyButton(
+        name: "CheckOut",
         onPressed: () {
+          widget.productProvider!.getCartData(
+            name: widget.name,
+            image: widget.image,
+            price: widget.price,
+            quantity: count,
+          );
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (ctx) => CartScreen(
-                image: widget.image,
-                name: widget.name,
-                price: widget.price,
-              ),
+              builder: (ctx) => CartScreen(),
             ),
           );
         },
       ),
     );
   }
-
-  final TextStyle myStyle = TextStyle(fontSize: 18);
 
   @override
   Widget build(BuildContext context) {
@@ -266,9 +269,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   _buildSizePart(),
                   _buildColorPart(),
                   _buildQuantityPart(),
-                  SizedBox(
-                    height: 15,
-                  ),
+                  SizedBox(height: 15),
                   _buildButtonCheckOutPart(),
                 ],
               ),

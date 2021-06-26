@@ -1,11 +1,11 @@
 import 'package:e_commerce_app/provider/category_provider.dart';
 import 'package:e_commerce_app/provider/product_provider.dart';
-import 'package:e_commerce_app/screens/cartscreen.dart';
+import 'package:e_commerce_app/screens/cart_screen.dart';
 import 'package:e_commerce_app/screens/checkout.dart';
-import 'package:e_commerce_app/screens/detailscreen.dart';
-import 'package:e_commerce_app/screens/homepage.dart';
-import 'package:e_commerce_app/screens/listproduct.dart';
-import 'package:e_commerce_app/screens/welcomescreen.dart';
+import 'package:e_commerce_app/screens/detail_screen.dart';
+import 'package:e_commerce_app/screens/home_screen.dart';
+import 'package:e_commerce_app/screens/list_product.dart';
+import 'package:e_commerce_app/screens/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,21 +27,27 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ProductProvider>(create: (context) => ProductProvider()),
-          ChangeNotifierProvider<CategoryProvider>(create: (context) => CategoryProvider()),
-        ],
-        child: StreamBuilder(
-          stream: FirebaseAuth.instance.onAuthStateChanged,
-          builder: (ctx, snapShot) {
-            if (snapShot.hasData) {
-              return HomePage();
-            } else {
-              return HomePage();
-            }
-          },
-        ),
+      home: Builder(
+        builder: (context) {
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider<ProductProvider>(
+                  create: (context) => ProductProvider()),
+              ChangeNotifierProvider<CategoryProvider>(
+                  create: (context) => CategoryProvider()),
+            ],
+            child: StreamBuilder(
+              stream: FirebaseAuth.instance.onAuthStateChanged,
+              builder: (context, snapShot) {
+                if (snapShot.hasData) {
+                  return HomeScreen();
+                } else {
+                  return HomeScreen();
+                }
+              },
+            ),
+          );
+        },
       ),
     );
   }
