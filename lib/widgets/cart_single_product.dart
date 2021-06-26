@@ -1,118 +1,145 @@
-import 'package:e_commerce_app/screens/checkout.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:e_commerce_app/provider/product_provider.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:provider/provider.dart';
 
-class CartSingleProduct extends StatefulWidget {
+class CheckOutSingleProduct extends StatefulWidget {
   final String? name;
   final String? image;
-  int? quantity;
+  final int? index;
+  final String? color;
+  final String? size;
+  final quantity;
   final double? price;
-  bool? isCount;
-  CartSingleProduct(
-      {this.name, this.image, this.quantity, this.price, this.isCount});
+  CheckOutSingleProduct({
+    this.index,
+    this.color,
+    this.size,
+    this.quantity,
+    this.image,
+    this.name,
+    this.price,
+  });
   @override
-  _CartSingleProductState createState() => _CartSingleProductState();
+  _CheckOutSingleProductState createState() => _CheckOutSingleProductState();
 }
 
-class _CartSingleProductState extends State<CartSingleProduct> {
-  final TextStyle myStyle = TextStyle(fontSize: 18);
+TextStyle myStyle = TextStyle(fontSize: 18);
+late ProductProvider productProvider;
+
+class _CheckOutSingleProductState extends State<CheckOutSingleProduct> {
+  double? height, width;
+  Widget _buildImage() {
+    return Container(
+      height: height! * 0.1 + 50,
+      width: width! * 0.3,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.fill,
+          image: NetworkImage("${widget.image}"),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNameAndClosePart() {
+    return Container(
+      height: 30,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "${widget.name}",
+            style: myStyle,
+          ),
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () {
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildColorAndSizePart() {
+    return Container(
+      width: width! * 0.4,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "${widget.color}",
+            style: myStyle,
+          ),
+          Text(
+            "${widget.size}",
+            style: myStyle,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCountOrNot() {
+    return Container(
+      height: 35,
+      width: width! * 0.2 + 20,
+      color: Color(0xfff2f2f2),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text("Quantity"),
+          Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: Text(
+              widget.quantity.toString(),
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    productProvider = Provider.of<ProductProvider>(context);
+
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Container(
-      height: 140,
+      height: height! * 0.2,
       width: double.infinity,
       child: Card(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Row(
-              children: [
+              children: <Widget>[
+                _buildImage(),
                 Container(
-                  height: 130,
-                  width: 120,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage("${widget.image}"),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 130,
-                  width: 200,
+                  height: height! * 0.1 + 50,
+                  width: width! * 0.6,
                   child: ListTile(
                     title: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: <Widget>[
+                        _buildNameAndClosePart(),
+                        _buildColorAndSizePart(),
                         Text(
-                          "${widget.name}",
-                          style: myStyle,
-                        ),
-                        Text(
-                          "Cloths",
-                          style: myStyle,
-                        ),
-                        Text(
-                          "\$ ${widget.price.toString()}",
+                          "\$${widget.price!.toStringAsFixed(2)}",
                           style: TextStyle(
                               color: Color(0xff9b96d6),
+                              fontSize: 18,
                               fontWeight: FontWeight.bold),
                         ),
-                        Container(
-                          height: 35,
-                          width: widget.isCount == false ? 120 : 100,
-                          color: Color(0xfff2f2f2),
-                          child: widget.isCount == false
-                              ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    GestureDetector(
-                                      child: Icon(Icons.remove),
-                                      onTap: () {
-                                        setState(
-                                          () {
-                                            if (widget.quantity! > 1) {
-                                              widget.quantity =
-                                                  (widget.quantity! - 1);
-                                            }
-                                          },
-                                        );
-                                      },
-                                    ),
-                                    Text(widget.quantity.toString(),
-                                        style: myStyle),
-                                    GestureDetector(
-                                      child: Icon(Icons.add),
-                                      onTap: () {
-                                        setState(
-                                          () {
-                                            widget.quantity =
-                                                (widget.quantity! + 1);
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                )
-                              : Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text("Quantity"),
-                                    Text(
-                                      widget.quantity.toString(),
-                                      style: TextStyle(fontSize: 18),
-                                    ),
-                                  ],
-                                ),
-                        ),
+                        _buildCountOrNot(),
                       ],
                     ),
                   ),
-                ),
+                )
               ],
             ),
           ],
