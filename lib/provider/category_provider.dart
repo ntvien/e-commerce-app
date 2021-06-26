@@ -1,24 +1,107 @@
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/model/category_icon.dart';
 import 'package:e_commerce_app/model/product.dart';
 import 'package:flutter/material.dart';
 
 class CategoryProvider with ChangeNotifier {
+
+  /////////////// Camera First Icon Category /////////////////
+  late CategoryIcon cameraFirstIconData;
+  List<CategoryIcon> cameraFirstIcon = [];
+
+  Future<void> getCameraFirstIconData() async {
+    List<CategoryIcon> newList = [];
+    QuerySnapshot cameraFirstIconSnapShot = await FirebaseFirestore.instance
+        .collection("categoryicon")
+        .doc("shjNJJfwmenqOIGmADa7")
+        .collection("camera")
+        .get();
+    cameraFirstIconSnapShot.docs.forEach(
+          (element) {
+            cameraFirstIconData = CategoryIcon(
+          image: element.data()["image"],
+        );
+        newList.add(cameraFirstIconData);
+      },
+    );
+    cameraFirstIcon = newList;
+    notifyListeners();
+  }
+
+  List<CategoryIcon> get getCameraFirstIconList {
+    return cameraFirstIcon;
+  }
+
+  /////////////// Shoes First Icon Category /////////////////
+  late CategoryIcon shoesFirstIconData;
+  List<CategoryIcon> shoesFirstIcon = [];
+
+  Future<void> getShoesFirstIconData() async {
+    List<CategoryIcon> newList = [];
+    QuerySnapshot shoesFirstIconSnapShot = await FirebaseFirestore.instance
+        .collection("categoryicon")
+        .doc("shjNJJfwmenqOIGmADa7")
+        .collection("shoes")
+        .get();
+    shoesFirstIconSnapShot.docs.forEach(
+          (element) {
+        shoesFirstIconData = CategoryIcon(
+          image: element.data()["image"],
+        );
+        newList.add(shoesFirstIconData);
+      },
+    );
+    shoesFirstIcon = newList;
+    notifyListeners();
+  }
+
+  List<CategoryIcon> get getShoesFirstIconList {
+    return shoesFirstIcon;
+  }
+
+  /////////////// Watch First Icon Category /////////////////
+  late CategoryIcon watchFirstIconData;
+  List<CategoryIcon> watchFirstIcon = [];
+
+  Future<void> getWatchFirstIconData() async {
+    List<CategoryIcon> newList = [];
+    QuerySnapshot watchFirstIconSnapShot = await FirebaseFirestore.instance
+        .collection("categoryicon")
+        .doc("shjNJJfwmenqOIGmADa7")
+        .collection("watch")
+        .get();
+    watchFirstIconSnapShot.docs.forEach(
+          (element) {
+        watchFirstIconData = CategoryIcon(
+          image: element.data()["image"],
+        );
+        newList.add(watchFirstIconData);
+      },
+    );
+    watchFirstIcon = newList;
+    notifyListeners();
+  }
+
+  List<CategoryIcon> get getWatchFirstIconList {
+    return watchFirstIcon;
+  }
+
   /////////////// Dress Icon Category /////////////////
   late CategoryIcon dressIconData;
   List<CategoryIcon> dressIcon = [];
 
   Future<void> getDressIconData() async {
     List<CategoryIcon> newList = [];
-    QuerySnapshot dressIconSnapShot = await Firestore.instance
+    QuerySnapshot dressIconSnapShot = await FirebaseFirestore.instance
         .collection("categoryicon")
-        .document("0AAFerqp4Um5oDmJ14Ty")
+        .doc("0AAFerqp4Um5oDmJ14Ty")
         .collection("dress")
-        .getDocuments();
-    dressIconSnapShot.documents.forEach(
+        .get();
+    dressIconSnapShot.docs.forEach(
       (element) {
         dressIconData = CategoryIcon(
-          image: element.data["image"],
+          image: element.data()["image"],
         );
         newList.add(dressIconData);
       },
@@ -37,15 +120,15 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getShirtIconData() async {
     List<CategoryIcon> newList = [];
-    QuerySnapshot shirtIconSnapShot = await Firestore.instance
+    QuerySnapshot shirtIconSnapShot = await FirebaseFirestore.instance
         .collection("categoryicon")
-        .document("0AAFerqp4Um5oDmJ14Ty")
+        .doc("0AAFerqp4Um5oDmJ14Ty")
         .collection("shirt")
-        .getDocuments();
-    shirtIconSnapShot.documents.forEach(
+        .get();
+    shirtIconSnapShot.docs.forEach(
       (element) {
         shirtIconData = CategoryIcon(
-          image: element.data["image"],
+          image: element.data()["image"],
         );
         newList.add(shirtIconData);
       },
@@ -64,15 +147,15 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getShoesIconData() async {
     List<CategoryIcon> newList = [];
-    QuerySnapshot shoesIconSnapShot = await Firestore.instance
+    QuerySnapshot shoesIconSnapShot = await FirebaseFirestore.instance
         .collection("categoryicon")
-        .document("0AAFerqp4Um5oDmJ14Ty")
+        .doc("0AAFerqp4Um5oDmJ14Ty")
         .collection("shoes")
-        .getDocuments();
-    shoesIconSnapShot.documents.forEach(
+        .get();
+    shoesIconSnapShot.docs.forEach(
       (element) {
         shoesIconData = CategoryIcon(
-          image: element.data["image"],
+          image: element.data()["image"],
         );
         newList.add(shoesIconData);
       },
@@ -91,15 +174,15 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getPantIconData() async {
     List<CategoryIcon> newList = [];
-    QuerySnapshot pantIconSnapShot = await Firestore.instance
+    QuerySnapshot pantIconSnapShot = await FirebaseFirestore.instance
         .collection("categoryicon")
-        .document("0AAFerqp4Um5oDmJ14Ty")
+        .doc("0AAFerqp4Um5oDmJ14Ty")
         .collection("pant")
-        .getDocuments();
-    pantIconSnapShot.documents.forEach(
+        .get();
+    pantIconSnapShot.docs.forEach(
       (element) {
         pantIconData = CategoryIcon(
-          image: element.data["image"],
+          image: element.data()["image"],
         );
         newList.add(pantIconData);
       },
@@ -118,15 +201,15 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getTieIconData() async {
     List<CategoryIcon> newList = [];
-    QuerySnapshot tieIconSnapShot = await Firestore.instance
+    QuerySnapshot tieIconSnapShot = await FirebaseFirestore.instance
         .collection("categoryicon")
-        .document("0AAFerqp4Um5oDmJ14Ty")
+        .doc("0AAFerqp4Um5oDmJ14Ty")
         .collection("tie")
-        .getDocuments();
-    tieIconSnapShot.documents.forEach(
+        .get();
+    tieIconSnapShot.docs.forEach(
       (element) {
         tieIconData = CategoryIcon(
-          image: element.data["image"],
+          image: element.data()["image"],
         );
         newList.add(tieIconData);
       },
@@ -145,17 +228,17 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getDressData() async {
     List<Product> newList = [];
-    QuerySnapshot dressSnapShot = await Firestore.instance
+    QuerySnapshot dressSnapShot = await FirebaseFirestore.instance
         .collection("category")
-        .document("QVzE8g9M9QBgudGyF5ve")
+        .doc("QVzE8g9M9QBgudGyF5ve")
         .collection("dress")
-        .getDocuments();
-    dressSnapShot.documents.forEach(
+        .get();
+    dressSnapShot.docs.forEach(
       (element) {
         dressData = Product(
-          name: element.data["name"],
-          image: element.data["image"],
-          price: element.data["price"],
+          name: element.data()["name"],
+          image: element.data()["image"],
+          price: element.data()["price"],
         );
         newList.add(dressData);
       },
@@ -174,17 +257,17 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getShirtData() async {
     List<Product> newList = [];
-    QuerySnapshot shirtSnapShot = await Firestore.instance
+    QuerySnapshot shirtSnapShot = await FirebaseFirestore.instance
         .collection("category")
-        .document("QVzE8g9M9QBgudGyF5ve")
+        .doc("QVzE8g9M9QBgudGyF5ve")
         .collection("shirt")
-        .getDocuments();
-    shirtSnapShot.documents.forEach(
+        .get();
+    shirtSnapShot.docs.forEach(
       (element) {
         shirtData = Product(
-          name: element.data["name"],
-          image: element.data["image"],
-          price: element.data["price"],
+          name: element.data()["name"],
+          image: element.data()["image"],
+          price: element.data()["price"],
         );
         newList.add(shirtData);
       },
@@ -203,17 +286,17 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getShoesData() async {
     List<Product> newList = [];
-    QuerySnapshot shoesSnapShot = await Firestore.instance
+    QuerySnapshot shoesSnapShot = await FirebaseFirestore.instance
         .collection("category")
-        .document("QVzE8g9M9QBgudGyF5ve")
+        .doc("QVzE8g9M9QBgudGyF5ve")
         .collection("shoes")
-        .getDocuments();
-    shoesSnapShot.documents.forEach(
+        .get();
+    shoesSnapShot.docs.forEach(
       (element) {
         shoesData = Product(
-          name: element.data["name"],
-          image: element.data["image"],
-          price: element.data["price"],
+          name: element.data()["name"],
+          image: element.data()["image"],
+          price: element.data()["price"],
         );
         newList.add(shoesData);
       },
@@ -232,17 +315,17 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getPantData() async {
     List<Product> newList = [];
-    QuerySnapshot pantSnapShot = await Firestore.instance
+    QuerySnapshot pantSnapShot = await FirebaseFirestore.instance
         .collection("category")
-        .document("QVzE8g9M9QBgudGyF5ve")
+        .doc("QVzE8g9M9QBgudGyF5ve")
         .collection("pant")
-        .getDocuments();
-    pantSnapShot.documents.forEach(
+        .get();
+    pantSnapShot.docs.forEach(
       (element) {
         pantData = Product(
-          name: element.data["name"],
-          image: element.data["image"],
-          price: element.data["price"],
+          name: element.data()["name"],
+          image: element.data()["image"],
+          price: element.data()["price"],
         );
         newList.add(pantData);
       },
@@ -261,17 +344,17 @@ class CategoryProvider with ChangeNotifier {
 
   Future<void> getTieData() async {
     List<Product> newList = [];
-    QuerySnapshot tieSnapShot = await Firestore.instance
+    QuerySnapshot tieSnapShot = await FirebaseFirestore.instance
         .collection("category")
-        .document("QVzE8g9M9QBgudGyF5ve")
+        .doc("QVzE8g9M9QBgudGyF5ve")
         .collection("tie")
-        .getDocuments();
-    tieSnapShot.documents.forEach(
+        .get();
+    tieSnapShot.docs.forEach(
       (element) {
         tieData = Product(
-          name: element.data["name"],
-          image: element.data["image"],
-          price: element.data["price"],
+          name: element.data()["name"],
+          image: element.data()["image"],
+          price: element.data()["price"],
         );
         newList.add(tieData);
       },
