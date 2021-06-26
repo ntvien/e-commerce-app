@@ -2,24 +2,21 @@ import 'package:flutter/material.dart';
 
 class PasswordTextFormField extends StatelessWidget {
   final bool obserText;
-  final String? Function(String?)? validator;
-  final String name;
+  final TextEditingController? controller;
+  final String? name;
   final Function()? onTap;
-  final void Function(String)? onChanged;
 
-  PasswordTextFormField(
-      {required this.obserText,
-      required this.validator,
-      required this.name,
-      required this.onTap,
-      this.onChanged});
-
+  PasswordTextFormField({
+    this.controller,
+    this.onTap,
+    this.name,
+    required this.obserText,
+  });
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       obscureText: obserText,
-      validator: validator,
-      onChanged: onChanged,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         hintText: name,
