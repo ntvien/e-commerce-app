@@ -1,3 +1,4 @@
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/model/cart.dart';
 import 'package:e_commerce_app/model/product.dart';
@@ -12,13 +13,13 @@ class ProductProvider with ChangeNotifier {
   Future<void> getHomeFeatureData() async {
     List<Product> newList = [];
     QuerySnapshot homeFeatureSnapShot =
-        await Firestore.instance.collection("homefeature").getDocuments();
-    homeFeatureSnapShot.documents.forEach(
+        await FirebaseFirestore.instance.collection("homefeature").get();
+    homeFeatureSnapShot.docs.forEach(
       (element) {
         homeFeatureData = Product(
-          name: element.data["name"],
-          image: element.data["image"],
-          price: element.data["price"],
+          name: element.data()["name"],
+          image: element.data()["image"],
+          price: element.data()["price"],
         );
         newList.add(homeFeatureData);
       },
@@ -37,14 +38,15 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> getHomeNewAchivesData() async {
     List<Product> newList = [];
-    QuerySnapshot homeNewAchivesSnapShot =
-        await Firestore.instance.collection("homeachives").getDocuments();
-    homeNewAchivesSnapShot.documents.forEach(
+    QuerySnapshot homeNewAchivesSnapShot = await FirebaseFirestore.instance
+        .collection("homeachives")
+        .get();
+    homeNewAchivesSnapShot.docs.forEach(
       (element) {
         homeNewAchivesData = Product(
-          name: element.data["name"],
-          image: element.data["image"],
-          price: element.data["price"],
+          name: element.data()["name"],
+          image: element.data()["image"],
+          price: element.data()["price"],
         );
         newList.add(homeNewAchivesData);
       },
@@ -63,17 +65,17 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> getFeatureData() async {
     List<Product> newList = [];
-    QuerySnapshot featureSnapShot = await Firestore.instance
+    QuerySnapshot featureSnapShot = await FirebaseFirestore.instance
         .collection("product")
-        .document("KzDvCVWJ8CQCPlbW21Yq")
+        .doc("KzDvCVWJ8CQCPlbW21Yq")
         .collection("featureproduct")
-        .getDocuments();
-    featureSnapShot.documents.forEach(
+        .get();
+    featureSnapShot.docs.forEach(
       (element) {
         featureData = Product(
-          name: element.data["name"],
-          image: element.data["image"],
-          price: element.data["price"],
+          name: element.data()["name"],
+          image: element.data()["image"],
+          price: element.data()["price"],
         );
         newList.add(featureData);
       },
@@ -92,17 +94,17 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> getNewAchivesData() async {
     List<Product> newList = [];
-    QuerySnapshot newAchivesSnapShot = await Firestore.instance
+    QuerySnapshot newAchivesSnapShot = await FirebaseFirestore.instance
         .collection("product")
-        .document("KzDvCVWJ8CQCPlbW21Yq")
+        .doc("KzDvCVWJ8CQCPlbW21Yq")
         .collection("newachives")
-        .getDocuments();
-    newAchivesSnapShot.documents.forEach(
+        .get();
+    newAchivesSnapShot.docs.forEach(
       (element) {
         newAchivesData = Product(
-          name: element.data["name"],
-          image: element.data["image"],
-          price: element.data["price"],
+          name: element.data()["name"],
+          image: element.data()["image"],
+          price: element.data()["price"],
         );
         newList.add(newAchivesData);
       },
@@ -112,7 +114,6 @@ class ProductProvider with ChangeNotifier {
 
   List<Product> get getNewAchivesList {
     return newAchives;
-    notifyListeners();
   }
 
   /////////////// Cart /////////////////
@@ -131,5 +132,35 @@ class ProductProvider with ChangeNotifier {
 
   int get getCartListLength {
     return cartList.length;
+  }
+
+  List<Cart> checkOutModelList = [];
+  Cart? checkOutModel;
+
+  void getCheckOutData({
+    int? quantity,
+    double? price,
+    String? name,
+    String? color,
+    String? size,
+    String? image,
+  }) {
+    checkOutModel = Cart(
+      color: color,
+      size: size,
+      price: price,
+      name: name,
+      image: image,
+      quantity: quantity,
+    );
+    checkOutModelList.add(checkOutModel!);
+  }
+
+  List<Cart> get getCheckOutModelList {
+    return List.from(checkOutModelList);
+  }
+
+  int get getCheckOutModelListLength {
+    return checkOutModelList.length;
   }
 }
