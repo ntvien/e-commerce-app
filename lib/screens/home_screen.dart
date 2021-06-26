@@ -1,50 +1,57 @@
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:e_commerce_app/model/category_icon.dart';
+import 'package:e_commerce_app/model/product.dart';
 import 'package:e_commerce_app/provider/category_provider.dart';
 import 'package:e_commerce_app/provider/product_provider.dart';
+import 'package:e_commerce_app/screens/checkout.dart';
 import 'package:e_commerce_app/screens/detail_screen.dart';
 import 'package:e_commerce_app/screens/list_product.dart';
 import 'package:e_commerce_app/widgets/single_product.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:carousel_pro/carousel_pro.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:provider/provider.dart';
-import '../model/product.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+late CategoryProvider categoryProvider;
+late ProductProvider productProvider;
+
 class _HomeScreenState extends State<HomeScreen> {
-  final GlobalKey<ScaffoldState> _keyScaffold = GlobalKey<ScaffoldState>();
-
-  bool homeColor = true;
-  bool cartColor = false;
-  bool aboutColor = false;
-  bool contactUsColor = false;
-
-  late CategoryProvider categoryProvider;
-  late ProductProvider productProvider;
-
   Widget _buildCategoryProduct({String? image, int? color}) {
     return CircleAvatar(
-      maxRadius: 38,
+      maxRadius: height! * 0.1 / 2.1,
       backgroundColor: Color(color!),
       child: Container(
         height: 40,
         child: Image(
           color: Colors.white,
-          image: NetworkImage("$image"),
+          image: NetworkImage(image!),
         ),
       ),
     );
   }
 
+  double? height, width;
+  bool homeColor = true;
+
+  bool checkoutColor = false;
+
+  bool aboutColor = false;
+
+  bool contactUsColor = false;
+  bool profileColor = false;
+  late MediaQueryData mediaQuery;
+
   Widget _buildMyDrawer() {
     return Drawer(
       child: ListView(
-        children: [
+        children: <Widget>[
           UserAccountsDrawerHeader(
             accountName:
                 Text("Vien Nguyen", style: TextStyle(color: Colors.black)),
@@ -60,46 +67,72 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: () {
               setState(() {
                 homeColor = true;
-                cartColor = false;
-                aboutColor = false;
                 contactUsColor = false;
+                checkoutColor = false;
+                aboutColor = false;
+                profileColor = false;
               });
             },
             leading: Icon(Icons.home),
             title: Text("Home"),
           ),
           ListTile(
-            selected: cartColor,
+            selected: checkoutColor,
             onTap: () {
-              homeColor = false;
-              cartColor = true;
-              aboutColor = false;
-              contactUsColor = false;
+              setState(() {
+                checkoutColor = true;
+                contactUsColor = false;
+                homeColor = false;
+                profileColor = false;
+                aboutColor = false;
+              });
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (ctx) => CheckOut()));
             },
             leading: Icon(Icons.shopping_cart),
-            title: Text("Cart"),
+            title: Text("Checkout"),
           ),
           ListTile(
             selected: aboutColor,
             onTap: () {
-              homeColor = false;
-              cartColor = false;
-              aboutColor = true;
-              contactUsColor = false;
+              setState(() {
+                aboutColor = true;
+                contactUsColor = false;
+                homeColor = false;
+                profileColor = false;
+                checkoutColor = false;
+              });
             },
             leading: Icon(Icons.info),
             title: Text("About"),
           ),
           ListTile(
+            selected: profileColor,
+            onTap: () {
+              setState(() {
+                aboutColor = false;
+                contactUsColor = false;
+                homeColor = false;
+                profileColor = true;
+                checkoutColor = false;
+              });
+            },
+            leading: Icon(Icons.info),
+            title: Text("Profile"),
+          ),
+          ListTile(
             selected: contactUsColor,
             onTap: () {
-              homeColor = false;
-              cartColor = false;
-              aboutColor = false;
-              contactUsColor = true;
+              setState(() {
+                contactUsColor = true;
+                checkoutColor = false;
+                profileColor = false;
+                homeColor = false;
+                aboutColor = false;
+              });
             },
             leading: Icon(Icons.phone),
-            title: Text("Contact us"),
+            title: Text("Contact Us"),
           ),
           ListTile(
             onTap: () {
@@ -113,187 +146,193 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildImageSlider() {
+  Widget _buildImageSwipe({String? image}) {
     return Container(
-      height: 190,
+      child: Image(
+        image: NetworkImage(image!),
+      ),
+    );
+  }
+
+  Widget _buildImageSlider() {
+    List<CategoryIcon> cameraIcon = categoryProvider.getCameraFirstIconList;
+    List<CategoryIcon> shoesIcon = categoryProvider.getShoesFirstIconList;
+    List<CategoryIcon> watchIcon = categoryProvider.getWatchFirstIconList;
+
+    return Container(
+      height: height! * 0.25,
       child: Carousel(
         autoplay: true,
         showIndicator: false,
         images: [
-          AssetImage("images/women.jpg"),
-          AssetImage("images/man.jpg"),
-          AssetImage("images/camera.jpg"),
+          // AssetImage("images/man.jpg"),
+          // AssetImage("images/women.jpg"),
+          // AssetImage("images/camera.jpg"),
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: cameraIcon.map((e) {
+                return GestureDetector(
+                  onTap: (){},
+                  child: _buildImageSwipe(image: e.image),
+                );
+              }).toList(),
+            ),
+          ),
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: shoesIcon.map((e) {
+                return GestureDetector(
+                  onTap: (){},
+                  child: _buildImageSwipe(image: e.image),
+                );
+              }).toList(),
+            ),
+          ),
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: watchIcon.map((e) {
+                return GestureDetector(
+                  onTap: (){},
+                  child: _buildImageSwipe(image: e.image),
+                );
+              }).toList(),
+            ),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildDressIcon() {
-    List<Product> dressList = categoryProvider.getDressList;
-    List<CategoryIcon> dressIconList = categoryProvider.getDressIconList;
-
+    List<CategoryIcon> dressIcon = categoryProvider.getDressIconList;
+    List<Product> dress = categoryProvider.getDressList;
     return Row(
-      children: dressIconList.map((dressIcon) {
-        return Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => ListProduct(
-                      name: "Dress",
-                      snapShot: dressList,
-                    ),
-                  ),
-                );
-              },
-              child: _buildCategoryProduct(
-                image: dressIcon.image,
-                color: 0xff33dcfd,
+      children: dressIcon.map((e) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => ListProduct(
+                  name: "Dress",
+                  snapShot: dress,
+                ),
               ),
-            ),
-          ],
+            );
+          },
+          child: _buildCategoryProduct(image: e.image, color: 0xff33dcfd),
         );
       }).toList(),
     );
   }
 
   Widget _buildShirtIcon() {
-    List<Product> shirtList = categoryProvider.getShirtList;
-    List<CategoryIcon> shirtIconList = categoryProvider.getShirtIconList;
-
+    List<CategoryIcon> shirtIcon = categoryProvider.getShirtIconList;
+    List<Product> shirt = categoryProvider.getShirtList;
     return Row(
-      children: shirtIconList.map((shirtIcon) {
-        return Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => ListProduct(
-                      name: "Dress",
-                      snapShot: shirtList,
-                    ),
-                  ),
-                );
-              },
-              child: _buildCategoryProduct(
-                image: shirtIcon.image,
-                color: 0xfff38cdd,
+        children: shirtIcon.map((e) {
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => ListProduct(
+                name: "Shirt",
+                snapShot: shirt,
               ),
             ),
-          ],
-        );
-      }).toList(),
-    );
+          );
+        },
+        child: _buildCategoryProduct(image: e.image, color: 0xfff38cdd),
+      );
+    }).toList());
   }
 
-  Widget _buildShoesIcon() {
-    List<Product> shoesList = categoryProvider.getShoesList;
-    List<CategoryIcon> shoesIconList = categoryProvider.getShoesIconList;
-
+  Widget _buildShoeIcon() {
+    List<CategoryIcon> shoesIcon = categoryProvider.getShoesIconList;
+    List<Product> shoes = categoryProvider.getShoesList;
     return Row(
-      children: shoesIconList.map((shoesIcon) {
-        return Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => ListProduct(
-                      name: "Dress",
-                      snapShot: shoesList,
-                    ),
-                  ),
-                );
-              },
-              child: _buildCategoryProduct(
-                image: shoesIcon.image,
-                color: 0xff4ff2af,
+        children: shoesIcon.map((e) {
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => ListProduct(
+                name: "Shoes",
+                snapShot: shoes,
               ),
             ),
-          ],
-        );
-      }).toList(),
-    );
+          );
+        },
+        child: _buildCategoryProduct(
+          image: e.image,
+          color: 0xff4ff2af,
+        ),
+      );
+    }).toList());
   }
 
   Widget _buildPantIcon() {
-    List<Product> pantList = categoryProvider.getPantList;
-    List<CategoryIcon> pantIconList = categoryProvider.getPantIconList;
-
+    List<CategoryIcon> pantIcon = categoryProvider.getPantIconList;
+    List<Product> pant = categoryProvider.getPantList;
     return Row(
-      children: pantIconList.map((pantIcon) {
-        return Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => ListProduct(
-                      name: "Dress",
-                      snapShot: pantList,
-                    ),
-                  ),
-                );
-              },
-              child: _buildCategoryProduct(
-                image: pantIcon.image,
-                color: 0xff74acf7,
+        children: pantIcon.map((e) {
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => ListProduct(
+                name: "Pant",
+                snapShot: pant,
               ),
             ),
-          ],
-        );
-      }).toList(),
-    );
+          );
+        },
+        child: _buildCategoryProduct(
+          image: e.image,
+          color: 0xff74acf7,
+        ),
+      );
+    }).toList());
   }
 
   Widget _buildTieIcon() {
-    List<Product> tieList = categoryProvider.getTieList;
-    List<CategoryIcon> tieIconList = categoryProvider.getTieIconList;
-
+    List<CategoryIcon> tieIcon = categoryProvider.getTieIconList;
+    List<Product> tie = categoryProvider.getTieList;
     return Row(
-      children: tieIconList.map((tieIcon) {
-        return Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (ctx) => ListProduct(
-                      name: "Dress",
-                      snapShot: tieList,
-                    ),
-                  ),
-                );
-              },
-              child: _buildCategoryProduct(
-                image: tieIcon.image,
-                color: 0xff74acf7,
+        children: tieIcon.map((e) {
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => ListProduct(
+                name: "Tie",
+                snapShot: tie,
               ),
             ),
-          ],
-        );
-      }).toList(),
-    );
+          );
+        },
+        child: _buildCategoryProduct(
+          image: e.image,
+          color: 0xfffc6c8d,
+        ),
+      );
+    }).toList());
   }
 
   Widget _buildCategory() {
     return Column(
-      children: [
+      children: <Widget>[
         Container(
-          height: 50,
+          height: height! * 0.1 - 30,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Text(
-                "Category",
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                "Categories",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              Text(
-                "View more",
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-              )
             ],
           ),
         ),
@@ -302,10 +341,10 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: [
+              children: <Widget>[
                 _buildDressIcon(),
                 _buildShirtIcon(),
-                _buildShoesIcon(),
+                _buildShoeIcon(),
                 _buildPantIcon(),
                 _buildTieIcon(),
               ],
@@ -317,153 +356,182 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildFeature() {
-    List<Product> featureList = productProvider.getFeatureList;
-    List<Product> homeFeatureList = productProvider.getHomeFeatureList;
+    List<Product> featureProduct;
+    featureProduct = productProvider.getFeatureList;
 
     return Column(
-      children: [
+      children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          children: <Widget>[
             Text(
               "Featured",
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (ctx) => ListProduct(
                       name: "Featured",
-                      snapShot: featureList,
+                      isCategory: false,
+                      snapShot: featureProduct,
                     ),
                   ),
                 );
               },
               child: Text(
                 "View more",
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 17, color: Colors.black87),
               ),
-            ),
+            )
           ],
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: homeFeatureList.map((homeFeatureData) {
-              return Row(
-                children: [
+        Row(
+          children: productProvider.getHomeFeatureList.map((e) {
+            return Expanded(
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (ctx) => DetailScreen(
+                              image: e.image,
+                              price: e.price,
+                              name: e.name,
+                            ),
+                          ),
+                        );
+                      },
+                      child: SingleProduct(
+                        image: e.image,
+                        price: e.price,
+                        name: e.name,
+                      ),
+                    ),
+                  ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (ctx) => DetailScreen(
-                            image: homeFeatureData.image,
-                            name: homeFeatureData.name,
-                            price: homeFeatureData.price,
-                            productProvider: productProvider,
-                          ),
+                              image: e.image, price: e.price, name: e.name),
                         ),
                       );
                     },
                     child: SingleProduct(
-                      image: homeFeatureData.image,
-                      name: homeFeatureData.name,
-                      price: homeFeatureData.price,
+                      image: e.image,
+                      price: e.price,
+                      name: e.name,
                     ),
                   ),
                 ],
-              );
-            }).toList(),
-          ),
+              ),
+            );
+          }).toList(),
         ),
       ],
     );
   }
 
   Widget _buildNewAchives() {
-    List<Product> newAchivesList = productProvider.getNewAchivesList;
-    List<Product> homeNewAchivesList = productProvider.getHomeNewAchivesList;
-
+    List<Product> newAchivesProduct = productProvider.getNewAchivesList;
     return Column(
-      children: [
+      children: <Widget>[
         Container(
-          height: 50,
+          height: height! * 0.1 - 30,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
-            children: [
+            children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: <Widget>[
                   Text(
                     "New Achives",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (ctx) => ListProduct(
-                            name: "New Achives",
-                            snapShot: newAchivesList,
+                            name: "NewAchives",
+                            isCategory: false,
+                            snapShot: newAchivesProduct,
                           ),
                         ),
                       );
                     },
                     child: Text(
                       "View more",
-                      style:
-                          TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 17, color: Colors.black87),
                     ),
-                  ),
+                  )
                 ],
               ),
             ],
           ),
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: homeNewAchivesList.map((homeNewAchivesData) {
-              return Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (ctx) => DetailScreen(
-                            image: homeNewAchivesData.image,
-                            name: homeNewAchivesData.name,
-                            price: homeNewAchivesData.price,
-                            productProvider: productProvider,
+        Row(
+            children: productProvider.getHomeNewAchivesList.map((e) {
+          return Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (ctx) => DetailScreen(
+                                      image: e.image,
+                                      price: e.price,
+                                      name: e.name,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: SingleProduct(
+                                  image: e.image, price: e.price, name: e.name),
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    child: SingleProduct(
-                      image: homeNewAchivesData.image,
-                      name: homeNewAchivesData.name,
-                      price: homeNewAchivesData.price,
-                    ),
-                  ),
-                ],
-              );
-            }).toList(),
-          ),
-        ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (ctx) => DetailScreen(
+                                    image: e.image,
+                                    price: e.price,
+                                    name: e.name,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: SingleProduct(
+                                image: e.image, price: e.price, name: e.name),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          );
+        }).toList()),
       ],
     );
   }
 
-  @override
-  void initState() {
-    CategoryProvider categoryProvider = Provider.of(context, listen: false);
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
+  void getCallAllFunction() {
     categoryProvider.getDressData();
     categoryProvider.getShirtData();
     categoryProvider.getShoesData();
@@ -474,73 +542,103 @@ class _HomeScreenState extends State<HomeScreen> {
     categoryProvider.getShoesIconData();
     categoryProvider.getPantIconData();
     categoryProvider.getTieIconData();
+    categoryProvider.getCameraFirstIconData();
+    categoryProvider.getShoesFirstIconData();
+    categoryProvider.getWatchFirstIconData();
 
-    ProductProvider productProvider = Provider.of(context, listen: false);
     productProvider.getFeatureData();
-    productProvider.getNewAchivesData();
     productProvider.getHomeFeatureData();
+    productProvider.getNewAchivesData();
     productProvider.getHomeNewAchivesData();
-    productProvider.getCartData();
-
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    categoryProvider = Provider.of(context);
-    productProvider = Provider.of(context);
+    categoryProvider = Provider.of<CategoryProvider>(context);
+    productProvider = Provider.of<ProductProvider>(context);
+    getCallAllFunction();
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      key: _keyScaffold,
+      key: _key,
       drawer: _buildMyDrawer(),
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            _keyScaffold.currentState!.openDrawer();
-          },
-          icon: Icon(Icons.menu, color: Colors.black),
-        ),
         title: Text(
           "HomePage",
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.search, color: Colors.black),
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.notifications_none, color: Colors.black),
-          ),
-        ],
+        backgroundColor: Colors.teal,
+        leading: IconButton(
+            icon: Icon(
+              Icons.menu,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              _key.currentState!.openDrawer();
+            }),
+        actions: <Widget>[],
       ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
         margin: EdgeInsets.symmetric(horizontal: 20),
-        child: ListView(children: [
-          Container(
-            width: double.infinity,
-            child: Column(
+        child: ListView(
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  _buildImageSlider(),
+                  _buildCategory(),
+                  SizedBox(height: 10),
+                  _buildFeature(),
+                  _buildNewAchives()
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+      extendBody: true,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => HomeScreen(),
+            ),
+          );
+        },
+        child: Icon(Icons.home),
+      ),
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(45)),
+        child: Container(
+          color: Colors.black38,
+          child: BottomAppBar(
+            shape: CircularNotchedRectangle(),
+            child: Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildImageSlider(),
-                    _buildCategory(),
-                    SizedBox(height: 20),
-                    _buildFeature(),
-                    _buildNewAchives(),
-                  ],
+                Spacer(),
+                IconButton(
+                  icon: Icon(Icons.add_alert, color: Colors.white),
+                  onPressed: () {},
                 ),
+                Spacer(),
+                Spacer(),
+                IconButton(
+                  icon: Icon(Icons.turned_in, color: Colors.white),
+                  onPressed: () {},
+                ),
+                Spacer(),
               ],
             ),
           ),
-        ]),
+        ),
       ),
     );
   }
