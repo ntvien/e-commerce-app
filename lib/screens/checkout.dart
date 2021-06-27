@@ -4,6 +4,7 @@ import 'package:e_commerce_app/provider/product_provider.dart';
 import 'package:e_commerce_app/screens/home_screen.dart';
 import 'package:e_commerce_app/widgets/cart_single_product.dart';
 import 'package:e_commerce_app/widgets/my_button.dart';
+import 'package:e_commerce_app/widgets/notification_button.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:provider/provider.dart';
@@ -49,6 +50,7 @@ class _CheckOutState extends State<CheckOut> {
           child: MyButton(
             name: "Buy",
             onPressed: () {
+              productProvider.addNotification("Notification");
             },
           ),
         )
@@ -112,7 +114,8 @@ class _CheckOutState extends State<CheckOut> {
               );
             },
           ),
-          actions: <Widget>[
+          actions: [
+            NotificationButton(),
           ],
         ),
         bottomNavigationBar: Container(

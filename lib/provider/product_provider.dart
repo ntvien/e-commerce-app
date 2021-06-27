@@ -38,9 +38,8 @@ class ProductProvider with ChangeNotifier {
 
   Future<void> getHomeNewAchivesData() async {
     List<Product> newList = [];
-    QuerySnapshot homeNewAchivesSnapShot = await FirebaseFirestore.instance
-        .collection("homeachives")
-        .get();
+    QuerySnapshot homeNewAchivesSnapShot =
+        await FirebaseFirestore.instance.collection("homeachives").get();
     homeNewAchivesSnapShot.docs.forEach(
       (element) {
         homeNewAchivesData = Product(
@@ -134,8 +133,9 @@ class ProductProvider with ChangeNotifier {
     return cartList.length;
   }
 
+  /////////////// CheckOut /////////////////
   List<Cart> checkOutModelList = [];
-  Cart? checkOutModel;
+  late Cart checkOutModel;
 
   void getCheckOutData({
     int? quantity,
@@ -153,7 +153,7 @@ class ProductProvider with ChangeNotifier {
       image: image,
       quantity: quantity,
     );
-    checkOutModelList.add(checkOutModel!);
+    checkOutModelList.add(checkOutModel);
   }
 
   List<Cart> get getCheckOutModelList {
@@ -162,5 +162,20 @@ class ProductProvider with ChangeNotifier {
 
   int get getCheckOutModelListLength {
     return checkOutModelList.length;
+  }
+
+  /////////////// Notification /////////////////
+  List<String> notificationList = [];
+
+  void addNotification(String notification) {
+    notificationList.add(notification);
+  }
+
+  int get getNotificationIndex {
+    return notificationList.length;
+  }
+
+  get getNotificationList {
+    return notificationList;
   }
 }

@@ -2,6 +2,7 @@ import 'package:e_commerce_app/provider/product_provider.dart';
 import 'package:e_commerce_app/screens/checkout.dart';
 import 'package:e_commerce_app/screens/home_screen.dart';
 import 'package:e_commerce_app/widgets/my_button.dart';
+import 'package:e_commerce_app/widgets/notification_button.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:provider/provider.dart';
@@ -338,11 +339,13 @@ class _DetailScreenState extends State<DetailScreen> {
               );
             },
           ),
-          actions: <Widget>[],
+          actions: [
+            NotificationButton(),
+          ],
         ),
         body: Container(
           child: ListView(
-            children: <Widget>[
+            children: [
               _buildImage(),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),

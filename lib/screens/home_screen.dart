@@ -7,6 +7,7 @@ import 'package:e_commerce_app/provider/product_provider.dart';
 import 'package:e_commerce_app/screens/checkout.dart';
 import 'package:e_commerce_app/screens/detail_screen.dart';
 import 'package:e_commerce_app/screens/list_product.dart';
+import 'package:e_commerce_app/widgets/notification_button.dart';
 import 'package:e_commerce_app/widgets/single_product.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_auth/firebase_auth.dart';
@@ -539,14 +540,16 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () {
               _key.currentState!.openDrawer();
             }),
-        actions: <Widget>[],
+        actions: [
+          NotificationButton(),
+        ],
       ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
         margin: EdgeInsets.symmetric(horizontal: 20),
         child: ListView(
-          children: <Widget>[
+          children: [
             Container(
               width: double.infinity,
               child: Column(
