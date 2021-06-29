@@ -1,10 +1,14 @@
-import 'package:e_commerce_app/model/product.dart';
+import 'package:e_commerce_app/model/product_model.dart';
 import 'package:e_commerce_app/provider/category_provider.dart';
 import 'package:e_commerce_app/provider/product_provider.dart';
 import 'package:e_commerce_app/screens/detail_screen.dart';
 import 'package:e_commerce_app/screens/home_screen.dart';
+import 'package:e_commerce_app/screens/search_category.dart';
+import 'package:e_commerce_app/screens/search_product.dart';
+import 'package:e_commerce_app/widgets/notification_button.dart';
 import 'package:e_commerce_app/widgets/single_product.dart';
 import 'package:flutter/material.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:provider/provider.dart';
 
 class ListProduct extends StatelessWidget {
@@ -74,19 +78,25 @@ class ListProduct extends StatelessWidget {
   Widget _buildSearchBar(context) {
     return isCategory == true
         ? IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
-            onPressed: () {},
-          )
+      icon: Icon(
+        Icons.search,
+        color: Colors.black,
+      ),
+      onPressed: () {
+        categoryProvider.getSearchList(list: snapShot);
+        showSearch(context: context, delegate: SearchCategory());
+      },
+    )
         : IconButton(
-            icon: Icon(
-              Icons.search,
-              color: Colors.black,
-            ),
-            onPressed: () {},
-          );
+      icon: Icon(
+        Icons.search,
+        color: Colors.black,
+      ),
+      onPressed: () {
+        productProvider.getSearchList(list: snapShot);
+        showSearch(context: context, delegate: SearchProduct());
+      },
+    );
   }
 
   @override
@@ -111,6 +121,7 @@ class ListProduct extends StatelessWidget {
             }),
         actions: <Widget>[
           _buildSearchBar(context),
+          NotificationButton(),
         ],
       ),
       body: Container(
