@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/screens/home_screen.dart';
 import 'package:e_commerce_app/screens/signup.dart';
 import 'package:e_commerce_app/widgets/change_screen.dart';
 import 'package:e_commerce_app/widgets/my_button.dart';
@@ -45,7 +46,9 @@ class _SignInState extends State<SignIn> {
         SnackBar(
           content: Text(message.toString()),
           duration: Duration(milliseconds: 800),
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Theme
+              .of(context)
+              .primaryColor,
         ),
       );
       setState(() {
@@ -58,7 +61,9 @@ class _SignInState extends State<SignIn> {
       _scaffoldKey.currentState!.showSnackBar(SnackBar(
         content: Text(error.toString()),
         duration: Duration(milliseconds: 800),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
       ));
     }
 
@@ -67,7 +72,7 @@ class _SignInState extends State<SignIn> {
     });
   }
 
-  void vaildation() async {
+  void validation() async {
     if (email.text.isEmpty && password.text.isEmpty) {
       _scaffoldKey.currentState!.showSnackBar(
         SnackBar(
@@ -83,7 +88,7 @@ class _SignInState extends State<SignIn> {
     } else if (!regExp.hasMatch(email.text)) {
       _scaffoldKey.currentState!.showSnackBar(
         SnackBar(
-          content: Text("Please Try Vaild Email"),
+          content: Text("Please Try Valid Email"),
         ),
       );
     } else if (password.text.isEmpty) {
@@ -114,7 +119,7 @@ class _SignInState extends State<SignIn> {
             Column(
               children: <Widget>[
                 Text(
-                  "Login",
+                  "Sign In",
                   style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
@@ -144,9 +149,9 @@ class _SignInState extends State<SignIn> {
                 isLoading == false
                     ? MyButton(
                   onPressed: () {
-                    vaildation();
+                    validation();
                   },
-                  name: "Login",
+                  name: "Sign In",
                 )
                     : Center(
                   child: CircularProgressIndicator(),
@@ -155,7 +160,7 @@ class _SignInState extends State<SignIn> {
                   height: 10,
                 ),
                 ChangeScreen(
-                    name: "SignUp",
+                    name: "Sign Up",
                     whichAccount: "I Have Not Account!",
                     onTap: () {
                       Navigator.of(context).pushReplacement(
