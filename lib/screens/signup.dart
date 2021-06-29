@@ -1,3 +1,5 @@
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/screens/home_screen.dart';
 import 'package:e_commerce_app/screens/signin.dart';
 import 'package:e_commerce_app/widgets/change_screen.dart';
@@ -32,7 +34,7 @@ bool isLoading = false;
 
 class _SignUpState extends State<SignUp> {
   void submit() async {
-    UserCredential result;
+    UserCredential? result;
     try {
       setState(() {
         isLoading = true;
@@ -65,14 +67,14 @@ class _SignUpState extends State<SignUp> {
 
       print(error);
     }
-    // FirebaseFirestore.instance.collection("User").doc(result.user.uid).set({
-    //   "UserName": userName.text,
-    //   "UserId": result.user.uid,
-    //   "UserEmail": email.text,
-    //   "UserAddress": address.text,
-    //   "UserGender": isMale == true ? "Male" : "Female",
-    //   "UserNumber": phoneNumber.text,
-    // });
+    FirebaseFirestore.instance.collection("User").doc(result!.user.uid).set({
+      "UserName": userName.text,
+      "UserId": result.user.uid,
+      "UserEmail": email.text,
+      "UserAddress": address.text,
+      "UserGender": isMale == true ? "Male" : "Female",
+      "UserNumber": phoneNumber.text,
+    });
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (ctx) => HomeScreen()));
     setState(() {
@@ -235,7 +237,7 @@ class _SignUpState extends State<SignUp> {
                   child: CircularProgressIndicator(),
                 ),
           ChangeScreen(
-            name: "Login",
+            name: "Sign In",
             whichAccount: "I Have Already An Account!",
             onTap: () {
               Navigator.of(context).pushReplacement(
