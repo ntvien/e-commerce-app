@@ -1,7 +1,7 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce_app/model/category_icon.dart';
-import 'package:e_commerce_app/model/product.dart';
+import 'package:e_commerce_app/model/category_icon_model.dart';
+import 'package:e_commerce_app/model/product_model.dart';
 import 'package:flutter/material.dart';
 
 class CategoryProvider with ChangeNotifier {
@@ -366,4 +366,19 @@ class CategoryProvider with ChangeNotifier {
   List<Product> get getTieList {
     return tie;
   }
+
+  /////////////// Search Category /////////////////
+  List<Product> searchList = [];
+  void getSearchList({List<Product>? list}) {
+    searchList = list!;
+  }
+
+  List<Product> searchCategoryList(String query) {
+    List<Product> searchCategory = searchList.where((element) {
+      return element.name.toUpperCase().contains(query) ||
+          element.name.toLowerCase().contains(query);
+    }).toList();
+    return searchCategory;
+  }
+
 }
