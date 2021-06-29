@@ -90,7 +90,7 @@ class WelcomeScreen extends StatelessWidget {
                             );
                           },
                           child: Text(
-                            "Login",
+                            "Sign In",
                             style: TextStyle(
                               fontSize: 18,
                               color: Color(0xff7746bc9),
