@@ -56,6 +56,7 @@ class _CheckOutSingleProductState extends State<CheckOutSingleProduct> {
           IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
+              productProvider.deleteCheckoutProduct(widget.index as int);
             },
           ),
         ],
