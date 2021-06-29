@@ -213,4 +213,17 @@ class ProductProvider with ChangeNotifier {
     return notificationList;
   }
 
+  //////////// Delete CheckOut /////////////
+  void deleteCheckoutProduct(int index) {
+    checkOutModelList.removeAt(index);
+    notifyListeners();
+  }
+
+  //////////// Clear CheckOut /////////////
+  void clearCheckoutProduct() {
+    checkOutModelList.clear();
+    notifyListeners();
+  }
+
+
 }
