@@ -1,10 +1,14 @@
 
-import 'package:e_commerce_app/model/cart.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce_app/model/cart_model.dart';
 import 'package:e_commerce_app/provider/product_provider.dart';
 import 'package:e_commerce_app/screens/home_screen.dart';
-import 'package:e_commerce_app/widgets/cart_single_product.dart';
+import 'package:e_commerce_app/widgets/checkout_single_product.dart';
 import 'package:e_commerce_app/widgets/my_button.dart';
 import 'package:e_commerce_app/widgets/notification_button.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:provider/provider.dart';
@@ -39,24 +43,53 @@ class _CheckOutState extends State<CheckOut> {
     );
   }
 
+  late User user;
   double? total;
   List<Cart>? myList;
 
   Widget _buildButton() {
     return Column(
-      children: [
-        Container(
-          height: 50,
-          child: MyButton(
-            name: "Buy",
-            onPressed: () {
-              productProvider.addNotification("Notification");
-            },
-          ),
-        )
-      ],
-    );
+        children: productProvider.userModelList.map((e) {
+          return Container(
+            height: 50,
+            child: MyButton(
+              name: "Buy",
+              onPressed: () {
+                if (productProvider.getCheckOutModelList.isNotEmpty) {
+                  FirebaseFirestore.instance.collection("Order").add({
+                    "Product": productProvider.getCheckOutModelList
+                        .map((c) => {
+                      "ProductName": c.name,
+                      "ProductPrice": c.price,
+                      "ProductQuantity": c.quantity,
+                      "ProductImage": c.image,
+                      "Product Color": c.color,
+                      "Product Size": c.size,
+                    })
+                        .toList(),
+                    "TotalPrice": total!.toStringAsFixed(2),
+                    "UserName": e.userName,
+                    "UserEmail": e.userEmail,
+                    "UserNumber": e.userPhoneNumber,
+                    "UserAddress": e.userAddress,
+                    "UserId": user.uid,
+                  });
+                  setState(() {
+                    myList!.clear();
+                  });
 
+                  productProvider.addNotification("Notification");
+                } else {
+                  _scaffoldKey.currentState!.showSnackBar(
+                    SnackBar(
+                      content: Text("No Item Yet"),
+                    ),
+                  );
+                }
+              },
+            ),
+          );
+        }).toList());
   }
 
   @override
@@ -68,6 +101,7 @@ class _CheckOutState extends State<CheckOut> {
 
   @override
   Widget build(BuildContext context) {
+    user = FirebaseAuth.instance.currentUser;
     double subTotal = 0;
     double discount = 3;
     double discountRupees;
