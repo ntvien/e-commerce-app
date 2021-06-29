@@ -225,5 +225,17 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  //////////// Search Product /////////////
+  List<Product> searchList = [];
+  void getSearchList({List<Product>? list}) {
+    searchList = list!;
+  }
 
+  List<Product> searchProductList(String query) {
+    List<Product> searchProduct = searchList.where((element) {
+      return element.name.toUpperCase().contains(query) ||
+          element.name.toLowerCase().contains(query);
+    }).toList();
+    return searchProduct;
+  }
 }
