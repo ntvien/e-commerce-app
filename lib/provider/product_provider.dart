@@ -1,11 +1,45 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce_app/model/cart.dart';
-import 'package:e_commerce_app/model/product.dart';
+import 'package:e_commerce_app/model/cart_model.dart';
+import 'package:e_commerce_app/model/product_model.dart';
+import 'package:e_commerce_app/model/user_model.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ProductProvider with ChangeNotifier {
+  /////////////// User Model /////////////////
+  List<UserModel> userModelList = [];
+  late UserModel userModel;
+  Future<void> getUserData() async {
+    List<UserModel> newList = [];
+    User currentUser = FirebaseAuth.instance.currentUser;
+    QuerySnapshot userSnapShot =
+        await FirebaseFirestore.instance.collection("User").get();
+    userSnapShot.docs.forEach(
+      (element) {
+        if (currentUser.uid.toString() == element.data()["UserId"]) {
+          userModel = UserModel(
+            userName: element.data()["UserName"],
+            userEmail: element.data()["UserEmail"],
+            userGender: element.data()["UserGender"],
+            userPhoneNumber: element.data()["UserNumber"],
+            userAddress: element.data()["UserAddress"],
+            userImage: element.data()["UserImage"],
+          );
+          newList.add(userModel);
+        }
+        userModelList = newList;
+        notifyListeners();
+      },
+    );
+  }
+
+  List<UserModel> get getUserModelList {
+    return userModelList;
+  }
+
   /////////////// Home Feature /////////////////
   late Product homeFeatureData;
   List<Product> homeFeature = [];
@@ -138,20 +172,20 @@ class ProductProvider with ChangeNotifier {
   late Cart checkOutModel;
 
   void getCheckOutData({
-    int? quantity,
-    double? price,
-    String? name,
-    String? color,
-    String? size,
     String? image,
+    String? name,
+    double? price,
+    int? quantity,
+    String? size,
+    String? color,
   }) {
     checkOutModel = Cart(
-      color: color,
-      size: size,
-      price: price,
-      name: name,
       image: image,
+      name: name,
+      price: price,
       quantity: quantity,
+      size: size,
+      color: color,
     );
     checkOutModelList.add(checkOutModel);
   }
@@ -178,4 +212,5 @@ class ProductProvider with ChangeNotifier {
   get getNotificationList {
     return notificationList;
   }
+
 }
