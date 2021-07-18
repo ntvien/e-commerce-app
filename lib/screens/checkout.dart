@@ -141,11 +141,12 @@ class _CheckOutState extends State<CheckOut> {
               color: Colors.black,
             ),
             onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (ctx) => HomeScreen(),
-                ),
-              );
+              Navigator.of(context).pop();
+              // Navigator.of(context).pushReplacement(
+              //   MaterialPageRoute(
+              //     builder: (ctx) => HomeScreen(),
+              //   ),
+              // );
             },
           ),
           actions: [
