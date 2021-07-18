@@ -1,6 +1,10 @@
+// @dart=2.9
 import 'package:e_commerce_app/provider/category_provider.dart';
 import 'package:e_commerce_app/provider/product_provider.dart';
 import 'package:e_commerce_app/screens/home_screen.dart';
+import 'package:e_commerce_app/screens/signin.dart';
+import 'package:e_commerce_app/screens/signup.dart';
+import 'package:e_commerce_app/screens/welcome_screen.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:firebase_auth/firebase_auth.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -45,7 +49,7 @@ class MyApp extends StatelessWidget {
             if (snapshot.hasData) {
               return HomeScreen();
             } else {
-              return HomeScreen();
+              return WelcomeScreen();
             }
           },
         ),

@@ -8,23 +8,25 @@ class WelcomeScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 80),
+          padding: EdgeInsets.symmetric(horizontal: 50),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                height: 600,
+                height: 550,
                 width: double.infinity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     Container(
-                      height: 350,
+                      height: 320,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage("images/shopping.png"))),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage("images/shopping.png"),
+                        ),
+                      ),
                     ),
                     Text(
                       "Welcome",
@@ -35,11 +37,10 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      height: 60,
+                      height: 70,
                       width: double.infinity,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
                         children: <Widget>[
                           Text(
                             "Ready To Start Shopping Sign Up",
@@ -64,7 +65,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                         color: Color(0xff746bc9),
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(
+                          Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (ctx) => SignUp(),
                             ),
@@ -76,14 +77,14 @@ class WelcomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Already have an account?",
+                          "Already have an account? ",
                           style: TextStyle(
                             fontSize: 18,
                           ),
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).pushReplacement(
+                            Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (ctx) => SignIn(),
                               ),

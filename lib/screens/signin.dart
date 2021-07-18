@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/screens/home_screen.dart';
 import 'package:e_commerce_app/screens/signup.dart';
 import 'package:e_commerce_app/widgets/change_screen.dart';
@@ -35,7 +36,7 @@ class _SignInState extends State<SignIn> {
       });
       UserCredential result = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
-          email: email.text, password: password.text);
+              email: email.text, password: password.text);
       print(result);
     } on PlatformException catch (error) {
       var message = "Please Check Your Internet Connection ";
@@ -46,9 +47,7 @@ class _SignInState extends State<SignIn> {
         SnackBar(
           content: Text(message.toString()),
           duration: Duration(milliseconds: 800),
-          backgroundColor: Theme
-              .of(context)
-              .primaryColor,
+          backgroundColor: Theme.of(context).primaryColor,
         ),
       );
       setState(() {
@@ -61,12 +60,9 @@ class _SignInState extends State<SignIn> {
       _scaffoldKey.currentState!.showSnackBar(SnackBar(
         content: Text(error.toString()),
         duration: Duration(milliseconds: 800),
-        backgroundColor: Theme
-            .of(context)
-            .primaryColor,
+        backgroundColor: Theme.of(context).primaryColor,
       ));
     }
-
     setState(() {
       isLoading = false;
     });
@@ -112,6 +108,7 @@ class _SignInState extends State<SignIn> {
     return Expanded(
       flex: 3,
       child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         width: double.infinity,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -148,27 +145,28 @@ class _SignInState extends State<SignIn> {
                 ),
                 isLoading == false
                     ? MyButton(
-                  onPressed: () {
-                    validation();
-                  },
-                  name: "Sign In",
-                )
+                        onPressed: () {
+                          validation();
+                        },
+                        name: "Sign In",
+                      )
                     : Center(
-                  child: CircularProgressIndicator(),
-                ),
+                        child: CircularProgressIndicator(),
+                      ),
                 SizedBox(
                   height: 10,
                 ),
                 ChangeScreen(
-                    name: "Sign Up",
-                    whichAccount: "I Have Not Account!",
-                    onTap: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (ctx) => SignUp(),
-                        ),
-                      );
-                    }),
+                  name: "Sign Up",
+                  whichAccount: "I Have Not Account!",
+                  onTap: () {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (ctx) => SignUp(),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ],

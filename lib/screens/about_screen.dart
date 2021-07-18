@@ -1,4 +1,3 @@
-
 import 'package:e_commerce_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -7,8 +6,8 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        return Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (ctx) => HomeScreen())) as Future<bool>;
+        return Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (ctx) => HomeScreen())) as Future<bool>;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -21,8 +20,12 @@ class AboutScreen extends StatelessWidget {
               size: 35,
             ),
             onPressed: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => HomeScreen()));
+              Navigator.of(context).pop();
+              // Navigator.of(context).pushReplacement(
+              //   MaterialPageRoute(
+              //     builder: (ctx) => HomeScreen(),
+              //   ),
+              // );
             },
           ),
         ),

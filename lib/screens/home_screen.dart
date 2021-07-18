@@ -1,12 +1,16 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:carousel_pro/carousel_pro.dart';
-import 'package:e_commerce_app/model/category_icon.dart';
-import 'package:e_commerce_app/model/product.dart';
+import 'package:e_commerce_app/model/category_icon_model.dart';
+import 'package:e_commerce_app/model/product_model.dart';
+import 'package:e_commerce_app/model/user_model.dart';
 import 'package:e_commerce_app/provider/category_provider.dart';
 import 'package:e_commerce_app/provider/product_provider.dart';
+import 'package:e_commerce_app/screens/about_screen.dart';
 import 'package:e_commerce_app/screens/checkout.dart';
+import 'package:e_commerce_app/screens/contactus_screen.dart';
 import 'package:e_commerce_app/screens/detail_screen.dart';
 import 'package:e_commerce_app/screens/list_product.dart';
+import 'package:e_commerce_app/screens/profile_screen.dart';
 import 'package:e_commerce_app/widgets/notification_button.dart';
 import 'package:e_commerce_app/widgets/single_product.dart';
 // ignore: import_of_legacy_library_into_null_safe
@@ -40,29 +44,44 @@ class _HomeScreenState extends State<HomeScreen> {
 
   double? height, width;
   bool homeColor = true;
-
   bool checkoutColor = false;
-
   bool aboutColor = false;
-
   bool contactUsColor = false;
   bool profileColor = false;
   late MediaQueryData mediaQuery;
+
+  Widget _buildUserAccountsDrawerHeader() {
+    List<UserModel> userModel = productProvider.userModelList;
+    return Column(
+      children: userModel.map((e) {
+        return UserAccountsDrawerHeader(
+          accountName: Text(
+            e.userName as String,
+            style: TextStyle(color: Colors.black),
+          ),
+          currentAccountPicture: CircleAvatar(
+            backgroundColor: Colors.white,
+            backgroundImage: e.userImage == null
+                ? AssetImage("images/userImage.png")
+                : NetworkImage(e.userImage as String) as ImageProvider,
+          ),
+          decoration: BoxDecoration(color: Color(0xfff2f2f2)),
+          accountEmail: Text(e.userEmail as String,
+              style: TextStyle(color: Colors.black)),
+        );
+      }).toList(),
+    );
+  }
+
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
 
   Widget _buildMyDrawer() {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName:
-                Text("Vien Nguyen", style: TextStyle(color: Colors.black)),
-            accountEmail: Text("thevien898@gmail.com",
-                style: TextStyle(color: Colors.black)),
-            decoration: BoxDecoration(color: Color(0xfff2f2f2)),
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: AssetImage("images/userImage.png"),
-            ),
-          ),
+          _buildUserAccountsDrawerHeader(),
           ListTile(
             selected: homeColor,
             onTap: () {
@@ -87,8 +106,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 profileColor = false;
                 contactUsColor = false;
               });
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => CheckOut()));
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (ctx) => CheckOut(),
+                ),
+              );
             },
             leading: Icon(Icons.shopping_cart),
             title: Text("Checkout"),
@@ -103,8 +125,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 profileColor = false;
                 contactUsColor = false;
               });
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (ctx) => AboutScreen(),
+                ),
+              );
             },
-            leading: Icon(Icons.info),
+            leading: Icon(Icons.assignment),
             title: Text("About"),
           ),
           ListTile(
@@ -117,8 +144,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 profileColor = true;
                 contactUsColor = false;
               });
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (ctx) => ProfileScreen(),
+                ),
+              );
             },
-            leading: Icon(Icons.info),
+            leading: Icon(Icons.account_box_outlined),
             title: Text("Profile"),
           ),
           ListTile(
@@ -131,13 +163,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 profileColor = false;
                 contactUsColor = true;
               });
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (ctx) => ContactUsScreen(),
+                ),
+              );
             },
             leading: Icon(Icons.phone),
             title: Text("Contact Us"),
           ),
           ListTile(
             onTap: () {
-              FirebaseAuth.instance.signOut();
+              _signOut();
             },
             leading: Icon(Icons.exit_to_app),
             title: Text("Logout"),
@@ -511,6 +548,8 @@ class _HomeScreenState extends State<HomeScreen> {
     productProvider.getHomeFeatureData();
     productProvider.getNewAchivesData();
     productProvider.getHomeNewAchivesData();
+
+    productProvider.getUserData();
   }
 
   @override

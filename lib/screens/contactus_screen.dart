@@ -1,4 +1,3 @@
-
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/model/user_model.dart';
@@ -83,8 +82,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
     print(name);
     return WillPopScope(
       onWillPop: () {
-        return Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (ctx) => HomeScreen())) as Future<bool>;
+        return Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (ctx) => HomeScreen())) as Future<bool>;
       },
       child: Scaffold(
         key: _scaffoldKey,
@@ -98,8 +97,12 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
               size: 35,
             ),
             onPressed: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => HomeScreen()));
+              Navigator.of(context).pop();
+              // Navigator.of(context).pushReplacement(
+              //   MaterialPageRoute(
+              //     builder: (ctx) => HomeScreen(),
+              //   ),
+              // );
             },
           ),
         ),
